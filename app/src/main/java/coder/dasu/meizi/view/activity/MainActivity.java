@@ -1,4 +1,4 @@
-package coder.dasu.meizi.view.main;
+package coder.dasu.meizi.view.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import butterknife.ButterKnife;
 import coder.dasu.meizi.MeiziApp;
 import coder.dasu.meizi.R;
 import coder.dasu.meizi.base.BaseActivity;
@@ -18,6 +19,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.inject(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
