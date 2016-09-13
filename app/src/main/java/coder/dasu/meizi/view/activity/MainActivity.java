@@ -9,9 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import butterknife.ButterKnife;
-import coder.dasu.meizi.MeiziApp;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.base.BaseActivity;
+import coder.dasu.meizi.view.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -29,9 +28,9 @@ public class MainActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MeiziApp.getOkHttpClient();
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
             }
         });
     }

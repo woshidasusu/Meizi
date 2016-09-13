@@ -15,7 +15,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.data.Meizhi;
+import coder.dasu.meizi.data.bean.Meizi;
 import coder.dasu.meizi.listener.OnItemClickListener;
 
 /**
@@ -23,11 +23,11 @@ import coder.dasu.meizi.listener.OnItemClickListener;
  */
 public class MeizhiWallAdapter extends RecyclerView.Adapter<MeizhiWallAdapter.ViewHolder> {
 
-    private List<Meizhi> mMeizhiList;
+    private List<Meizi> mMeizhiList;
     private Context mContext;
     private OnItemClickListener mItemClickListener;
 
-    public MeizhiWallAdapter(Context context, List<Meizhi> list) {
+    public MeizhiWallAdapter(Context context, List<Meizi> list) {
         mContext = context;
         mMeizhiList = list;
     }
@@ -43,11 +43,10 @@ public class MeizhiWallAdapter extends RecyclerView.Adapter<MeizhiWallAdapter.Vi
         holder.mMeizhi = mMeizhiList.get(position);
         
         Picasso.with(mContext)
-                .load(holder.mMeizhi.getImgUrl())
-                .error(holder.mMeizhi.getResId())
+                .load(holder.mMeizhi.getUrl())
                 .placeholder(R.drawable.meizhi1)
                 .into(holder.meizhiImg);
-        holder.meizhiText.setText(holder.mMeizhi.getText());
+        holder.meizhiText.setText(holder.mMeizhi.getWho());
     }
 
     @Override
@@ -67,7 +66,7 @@ public class MeizhiWallAdapter extends RecyclerView.Adapter<MeizhiWallAdapter.Vi
         TextView meizhiText;
 
         View mItemView;
-        Meizhi mMeizhi;
+        Meizi mMeizhi;
 
         public ViewHolder(View itemView) {
             super(itemView);

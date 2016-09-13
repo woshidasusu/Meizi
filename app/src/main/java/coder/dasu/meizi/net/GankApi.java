@@ -1,12 +1,17 @@
 package coder.dasu.meizi.net;
 
+import coder.dasu.meizi.data.bean.Meizi;
+import coder.dasu.meizi.net.response.GankDataResponse;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+
 /**
  * Created by dasu on 2016/8/25.
  */
-public abstract class GankApi {
+public interface GankApi {
 
-    private static final String TAG = "GankApi";
-
-    public static final String BASE_URL = "http://gank.io";
+    @GET("data/福利/{count}/{page}")
+    Call<GankDataResponse<Meizi>> getMeizhi(@Path("count") int count, @Path("page") int page);
 
 }

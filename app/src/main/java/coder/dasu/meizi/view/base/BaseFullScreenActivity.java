@@ -1,4 +1,4 @@
-package coder.dasu.meizi.base;
+package coder.dasu.meizi.view.base;
 
 /**
  * Created by dasu on 2016/9/1.

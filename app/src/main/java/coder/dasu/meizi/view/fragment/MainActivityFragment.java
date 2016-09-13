@@ -4,9 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,19 +17,27 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.data.Meizhi;
+import coder.dasu.meizi.data.bean.Meizi;
 import coder.dasu.meizi.listener.OnItemClickListener;
+import coder.dasu.meizi.net.GankApi;
+import coder.dasu.meizi.net.GankRetrofit;
+import coder.dasu.meizi.net.response.GankDataResponse;
 import coder.dasu.meizi.view.adapter.MeizhiWallAdapter;
+import coder.dasu.meizi.view.base.BaseFragment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends BaseFragment {
 
     @InjectView(R.id.rv_meizi_photo_wall)
     RecyclerView mMeiziWallView;
 
-    private List<Meizhi> mMeizhiList;
+    private List<Meizi> mMeizhiList;
+    private MeizhiWallAdapter mMeiziAdapter;
     private Context mContext;
 
     public MainActivityFragment() {
@@ -44,7 +52,6 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadData();
     }
 
     @Override
@@ -53,6 +60,7 @@ public class MainActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.inject(this, view);
         initView();
+        loadData();
         return view;
     }
 
@@ -76,25 +84,31 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void loadData() {
-        mMeizhiList = new ArrayList<>();
-        mMeizhiList.add(new Meizhi("http://", "asdg1", R.drawable.meizhi1));
-        mMeizhiList.add(new Meizhi("http://ww1.sinaimg.cn/large/610dc034jw1f7kpy9czh0j20u00vn0us.jpg", "asdg2", R.drawable.meizhi1));
-        mMeizhiList.add(new Meizhi("http://ww1.sinaimg.cn/large/610dc034jw1f7kpy9czh0j20u00vn0us.jpg", "asdg2", R.drawable.meizhi1));
-        mMeizhiList.add(new Meizhi("http://ww1.sinaimg.cn/large/610dc034jw1f7kpy9czh0j20u00vn0us.jpg", "asdg2", R.drawable.meizhi1));
-        mMeizhiList.add(new Meizhi(null, "asdg3", R.drawable.meizhi1));
-        mMeizhiList.add(new Meizhi(null, "asdg4", R.drawable.meizhi1));
-        for (int i=0;i<1000;i++){
-            mMeizhiList.add(new Meizhi("http://ww1.sinaimg.cn/large/610dc034jw1f7kpy9czh0j20u00vn0us.jpg", "妹纸编号 " + i, R.drawable.meizhi1));
-        }
+        GankApi gankApi = GankRetrofit.getGankService();
+        Call<GankDataResponse<Meizi>> call = gankApi.getMeizhi(10,1);
+        call.enqueue(new Callback<GankDataResponse<Meizi>>() {
+            @Override
+            public void onResponse(Call<GankDataResponse<Meizi>> call, Response<GankDataResponse<Meizi>> response) {
+                mMeizhiList.addAll(response.body().results);
+                mMeiziAdapter.notifyDataSetChanged();
+                Log.d("!!!!!","success");
+            }
+
+            @Override
+            public void onFailure(Call<GankDataResponse<Meizi>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void initView() {
+        mMeizhiList = new ArrayList<>();
         mMeiziWallView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        MeizhiWallAdapter adapter = new MeizhiWallAdapter(mContext, mMeizhiList);
-        mMeiziWallView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new OnItemClickListener() {
+        mMeiziAdapter = new MeizhiWallAdapter(mContext, mMeizhiList);
+        mMeiziWallView.setAdapter(mMeiziAdapter);
+        mMeiziAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(View view, View picture, View text, Meizhi meizhi) {
+            public void onItemClick(View view, View picture, View text, Meizi meizhi) {
                 Snackbar.make(view, view == picture ? "meizhi" : "text", Snackbar.LENGTH_SHORT).show();
             }
         });

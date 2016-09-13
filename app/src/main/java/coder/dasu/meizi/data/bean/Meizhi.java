@@ -1,9 +1,12 @@
-package coder.dasu.meizi.data;
+package coder.dasu.meizi.data.bean;
 
 /**
  * Created by sxq on 2016/9/10.
  */
-public class Meizhi {
+public class Meizhi{
+
+    private String _id;
+
 
     private String imgUrl;
     private String text;
