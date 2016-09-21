@@ -1,6 +1,7 @@
 package coder.dasu.meizi.view.activity;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -10,14 +11,14 @@ import android.view.View;
 
 import butterknife.ButterKnife;
 import coder.dasu.meizi.R;
+import coder.dasu.meizi.listener.IMainAF;
 import coder.dasu.meizi.view.base.BaseActivity;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IMainAF{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         ButterKnife.inject(this);
 
@@ -34,6 +35,17 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    public int provideContentView() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -55,5 +67,10 @@ public class MainActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void loadData() {
+
     }
 }

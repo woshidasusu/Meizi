@@ -9,9 +9,9 @@
                 tools:context=".view.fragment.MainActivityFragment"
                 tools:showIn="@layout/activity_main">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_meizi_photo_wall"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_meizi_photo_wall"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
 </RelativeLayout>

@@ -5,10 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SizeReadyCallback;
 
 import java.util.List;
 
@@ -17,6 +17,7 @@ import butterknife.InjectView;
 import coder.dasu.meizi.R;
 import coder.dasu.meizi.data.bean.Meizi;
 import coder.dasu.meizi.listener.OnItemClickListener;
+import coder.dasu.meizi.view.widgets.RatioImageView;
 
 /**
  * Created by sxq on 2016/9/10.
@@ -39,14 +40,23 @@ public class MeizhiWallAdapter extends RecyclerView.Adapter<MeizhiWallAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mMeizhi = mMeizhiList.get(position);
-        
-        Picasso.with(mContext)
+
+        holder.meizhiText.setText(holder.mMeizhi.getDesc());
+
+        Glide.with(mContext)
                 .load(holder.mMeizhi.getUrl())
-                .placeholder(R.drawable.meizhi1)
-                .into(holder.meizhiImg);
-        holder.meizhiText.setText(holder.mMeizhi.getWho());
+                .centerCrop()
+                .into(holder.meizhiImg)
+                .getSize(new SizeReadyCallback() {
+                    @Override
+                    public void onSizeReady(int width, int height) {
+                        if (!holder.mItemView.isShown()) {
+                            holder.mItemView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -61,7 +71,7 @@ public class MeizhiWallAdapter extends RecyclerView.Adapter<MeizhiWallAdapter.Vi
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @InjectView(R.id.meizhi_img)
-        ImageView meizhiImg;
+        RatioImageView meizhiImg;
         @InjectView(R.id.meizhi_tv)
         TextView meizhiText;
 
@@ -74,6 +84,7 @@ public class MeizhiWallAdapter extends RecyclerView.Adapter<MeizhiWallAdapter.Vi
             mItemView = itemView;
             mItemView.setOnClickListener(this);
             meizhiImg.setOnClickListener(this);
+            meizhiImg.setOriginSize(50, 50);
         }
 
         @Override

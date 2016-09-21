@@ -25,6 +25,7 @@ public class MeiziApp extends Application {
         super.onCreate();
         Picasso.with(getApplicationContext())
                 .setDebugging(true);
+
         mContext = getApplicationContext();
         initGreenDao();
     }
