@@ -8,7 +8,9 @@ android小白练手项目---妹子App
 引入Retrofit2网络访问框架  
 
 效果：  
-![](./picture/meizi1.jpg)  
+![](./picture/meizi1.jpg)    
+
+
 
 
 
