@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import coder.dasu.meizi.R;
+import coder.dasu.meizi.listener.ISwipeRefreshListener;
 
 /**
  * Created by dasu on 2016/8/25.
@@ -16,6 +16,8 @@ import coder.dasu.meizi.R;
 public abstract class BaseActivity extends AppCompatActivity implements ISwipeRefreshListener {
 
     private static final String TAG = "BaseActivity";
+
+    protected boolean mRefreshEnable = false;
 
     @InjectView(R.id.refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -26,28 +28,29 @@ public abstract class BaseActivity extends AppCompatActivity implements ISwipeRe
         setContentView(provideContentView());
 
         ButterKnife.inject(this);
+        initSwipeRefresh();
     }
 
     public abstract int provideContentView();
 
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        initSwipeRefresh();
-    }
-
-
     private void initSwipeRefresh() {
         if (mSwipeRefreshLayout != null) {
-            Log.d("!!!!!!!!!!!","asdf");
-            mSwipeRefreshLayout.setColorSchemeColors(R.color.deeppink, R.color.tomato, R.color.red);
+            mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.deeppink),
+                    getResources().getColor(R.color.tomato),
+                    getResources().getColor(R.color.red));
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
                     loadData();
                 }
             });
+
+            mSwipeRefreshLayout.setEnabled(mRefreshEnable);
         }
+    }
+
+    public void setRefreshEnable(boolean enable) {
+        mSwipeRefreshLayout.setEnabled(enable);
     }
 
     @Override
@@ -66,5 +69,9 @@ public abstract class BaseActivity extends AppCompatActivity implements ISwipeRe
         } else {
             mSwipeRefreshLayout.setRefreshing(true);
         }
+    }
+
+    public boolean isRefreshing(){
+        return mSwipeRefreshLayout.isRefreshing();
     }
 }

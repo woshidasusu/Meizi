@@ -22,13 +22,13 @@ import coder.dasu.meizi.view.widgets.RatioImageView;
 /**
  * Created by sxq on 2016/9/10.
  */
-public class MeizhiWallAdapter extends RecyclerView.Adapter<MeizhiWallAdapter.ViewHolder> {
+public class MeiziWallAdapter extends RecyclerView.Adapter<MeiziWallAdapter.ViewHolder> {
 
     private List<Meizi> mMeizhiList;
     private Context mContext;
     private OnItemClickListener mItemClickListener;
 
-    public MeizhiWallAdapter(Context context, List<Meizi> list) {
+    public MeiziWallAdapter(Context context, List<Meizi> list) {
         mContext = context;
         mMeizhiList = list;
     }

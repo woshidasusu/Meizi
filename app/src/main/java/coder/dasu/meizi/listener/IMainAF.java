@@ -6,6 +6,5 @@ package coder.dasu.meizi.listener;
  */
 public interface IMainAF {
 
-    void loadData();
 
 }

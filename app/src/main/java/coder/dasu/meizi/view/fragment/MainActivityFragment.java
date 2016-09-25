@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +24,8 @@ import coder.dasu.meizi.listener.OnItemClickListener;
 import coder.dasu.meizi.net.GankApi;
 import coder.dasu.meizi.net.GankRetrofit;
 import coder.dasu.meizi.net.response.GankDataResponse;
-import coder.dasu.meizi.view.adapter.MeizhiWallAdapter;
-import coder.dasu.meizi.view.base.BaseFragment;
+import coder.dasu.meizi.view.adapter.MeiziWallAdapter;
+import coder.dasu.meizi.view.base.SwipeRefreshFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,17 +33,19 @@ import retrofit2.Response;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends BaseFragment {
+public class MainActivityFragment extends SwipeRefreshFragment {
+
+    private static final String TAG = MainActivityFragment.class.getSimpleName();
 
     @InjectView(R.id.rv_meizi_photo_wall)
     RecyclerView mMeiziWallView;
 
-    private MeizhiWallAdapter mMeiziAdapter;
+    private MeiziWallAdapter mMeiziAdapter;
     private Context mContext;
     private IMainAF mControler;
 
     private int mLoadPage;
-    private List<Meizi> mMeizhiList;
+    private List<Meizi> mMeiziList;
 
     public MainActivityFragment() {
     }
@@ -71,7 +74,7 @@ public class MainActivityFragment extends BaseFragment {
         mLoadPage = 1;
         initView();
         loadLocalData();
-        loadServiceData();
+        loadServiceData(true);
         return view;
     }
 
@@ -95,16 +98,16 @@ public class MainActivityFragment extends BaseFragment {
     }
 
     private void initView() {
-        mMeizhiList = new ArrayList<>();
+        mMeiziList = new ArrayList<>();
         final StaggeredGridLayoutManager layoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mMeiziWallView.setLayoutManager(layoutManager);
-        mMeiziAdapter = new MeizhiWallAdapter(mContext, mMeizhiList);
+        mMeiziAdapter = new MeiziWallAdapter(mContext, mMeiziList);
         mMeiziWallView.setAdapter(mMeiziAdapter);
         mMeiziAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, View picture, View text, Meizi meizhi) {
-                Snackbar.make(view, view == picture ? "meizhi" : "text", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(view, view == picture ? "meizi" : "text", Snackbar.LENGTH_SHORT).show();
             }
         });
         mMeiziWallView.addOnScrollListener(getMeiziWallOnScroll(layoutManager));
@@ -115,10 +118,12 @@ public class MainActivityFragment extends BaseFragment {
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                boolean isBottom = layoutManager.findLastVisibleItemPositions(null)[1] >= mMeizhiList.size() - 1;
-                if (isBottom) {
+                boolean isBottom = layoutManager.findLastVisibleItemPositions(null)[1] >= mMeiziList.size() - 1;
+                Log.d(TAG,"isRefresh() : " +isRefreshing() +"   isBottom():" + isBottom);
+                if (!isRefreshing() && isBottom) {
+                    setRefresh(true);
                     mLoadPage++;
-                    loadServiceData();
+                    loadServiceData(false);
                 }
             }
         };
@@ -128,23 +133,42 @@ public class MainActivityFragment extends BaseFragment {
 
     }
 
-    private void loadServiceData() {
+    /**
+     * 加载服务器数据
+     * @param clearCache true 重新加载服务器数据
+     *                   false 加载下一页数据
+     */
+    private void loadServiceData(final boolean clearCache) {
         GankApi gankApi = GankRetrofit.getGankService();
-        Call<GankDataResponse<Meizi>> call = gankApi.getMeizhi(10,mLoadPage);
+        Call<GankDataResponse<Meizi>> call = gankApi.getMeizhi(GankApi.DEFAULT_COUNT, mLoadPage);
         call.enqueue(new Callback<GankDataResponse<Meizi>>() {
             @Override
             public void onResponse(Call<GankDataResponse<Meizi>> call, Response<GankDataResponse<Meizi>> response) {
-                mMeizhiList.addAll(response.body().results);
+                if (clearCache) {
+                    mMeiziList.clear();
+                }
+                mMeiziList.addAll(response.body().results);
                 mMeiziAdapter.notifyDataSetChanged();
-                Log.d("!!!!!","success");
+                setRefresh(false);
+                Log.w(TAG,"onResponse(): mMeiziList.size():" + mMeiziList.size());
             }
 
             @Override
             public void onFailure(Call<GankDataResponse<Meizi>> call, Throwable t) {
-
+                Log.d(TAG,"onFailure()" + t.getClass() + " " );
+                setRefresh(false);
+                if (t.getClass().equals(SocketTimeoutException.class)) {
+                    Snackbar.make(mMeiziWallView, "加载失败,请重试", Snackbar.LENGTH_SHORT).show();
+                    loadServiceData(false);
+                }
             }
         });
     }
 
+    @Override
+    public void loadData() {
+        mLoadPage = 1;
+        loadServiceData(true);
+    }
 }
 

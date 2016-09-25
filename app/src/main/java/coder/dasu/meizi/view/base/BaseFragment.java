@@ -8,7 +8,7 @@ import coder.dasu.meizi.data.dao.DaoSession;
 /**
  * Created by sxq on 2016/9/13.
  */
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     protected static DaoSession mDaoSession = MeiziApp.getDaoSession();
 

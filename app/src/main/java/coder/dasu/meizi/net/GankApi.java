@@ -11,6 +11,11 @@ import retrofit2.http.Path;
  */
 public interface GankApi {
 
+    /**
+     * 默认一次加载的数量
+     */
+    int DEFAULT_COUNT = 10;
+
     @GET("data/福利/{count}/{page}")
     Call<GankDataResponse<Meizi>> getMeizhi(@Path("count") int count, @Path("page") int page);
 
