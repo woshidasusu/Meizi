@@ -4,7 +4,7 @@ android小白练手项目---妹子App
 ##目前进展
 
 **2016-9-26**
-添加Tablayout
+添加Tablayout + ViewPager布局
 
 **2016-9-26前**
 引入GreenDao数据库框架  
