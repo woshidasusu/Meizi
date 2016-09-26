@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class MainActivityFragment extends SwipeRefreshFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (!(context instanceof IMainAF)){
+        if (!(context instanceof IMainAF)) {
             throw new UnsupportedOperationException(context.getClass().getSimpleName()
                     + " does not implements IMainAF interface");
         }
@@ -73,8 +72,6 @@ public class MainActivityFragment extends SwipeRefreshFragment {
         ButterKnife.inject(this, view);
         mLoadPage = 1;
         initView();
-        loadLocalData();
-        loadServiceData(true);
         return view;
     }
 
@@ -95,6 +92,8 @@ public class MainActivityFragment extends SwipeRefreshFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        loadLocalData();
+        loadServiceData(true);
     }
 
     private void initView() {
@@ -114,14 +113,13 @@ public class MainActivityFragment extends SwipeRefreshFragment {
 
     }
 
-    private RecyclerView.OnScrollListener getMeiziWallOnScroll(final StaggeredGridLayoutManager layoutManager){
+    private RecyclerView.OnScrollListener getMeiziWallOnScroll(final StaggeredGridLayoutManager layoutManager) {
         return new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 boolean isBottom = layoutManager.findLastVisibleItemPositions(null)[1] >= mMeiziList.size() - 1;
-                Log.d(TAG,"isRefresh() : " +isRefreshing() +"   isBottom():" + isBottom);
+                Log.d(TAG, "isRefresh() : " + isRefreshing() + "   isBottom():" + isBottom);
                 if (!isRefreshing() && isBottom) {
-                    setRefresh(true);
                     mLoadPage++;
                     loadServiceData(false);
                 }
@@ -135,10 +133,12 @@ public class MainActivityFragment extends SwipeRefreshFragment {
 
     /**
      * 加载服务器数据
+     *
      * @param clearCache true 重新加载服务器数据
      *                   false 加载下一页数据
      */
     private void loadServiceData(final boolean clearCache) {
+        setRefresh(true);
         GankApi gankApi = GankRetrofit.getGankService();
         Call<GankDataResponse<Meizi>> call = gankApi.getMeizhi(GankApi.DEFAULT_COUNT, mLoadPage);
         call.enqueue(new Callback<GankDataResponse<Meizi>>() {
@@ -150,17 +150,21 @@ public class MainActivityFragment extends SwipeRefreshFragment {
                 mMeiziList.addAll(response.body().results);
                 mMeiziAdapter.notifyDataSetChanged();
                 setRefresh(false);
-                Log.w(TAG,"onResponse(): mMeiziList.size():" + mMeiziList.size());
+                Log.w(TAG, "onResponse(): mMeiziList.size():" + mMeiziList.size());
             }
 
             @Override
             public void onFailure(Call<GankDataResponse<Meizi>> call, Throwable t) {
-                Log.d(TAG,"onFailure()" + t.getClass() + " " );
+                Log.d(TAG, "onFailure()" + t.getClass() + " ");
                 setRefresh(false);
-                if (t.getClass().equals(SocketTimeoutException.class)) {
-                    Snackbar.make(mMeiziWallView, "加载失败,请重试", Snackbar.LENGTH_SHORT).show();
-                    loadServiceData(false);
-                }
+                Snackbar.make(mMeiziWallView, "加载失败,请重试", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("重试", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                loadServiceData(false);
+                            }
+                        })
+                        .show();
             }
         });
     }
@@ -169,6 +173,11 @@ public class MainActivityFragment extends SwipeRefreshFragment {
     public void loadData() {
         mLoadPage = 1;
         loadServiceData(true);
+    }
+
+    @Override
+    public void onToolbarDoubleClick() {
+        mMeiziWallView.smoothScrollToPosition(0);
     }
 }
 

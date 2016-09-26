@@ -10,6 +10,14 @@ import android.support.annotation.Nullable;
 
 public abstract class SwipeRefreshFragment extends BaseFragment{
 
+    public SwipeRefreshFragment() {
+
+    }
+
+    public SwipeRefreshFragment(String value) {
+        super(value);
+    }
+
     public abstract void loadData();
 
     @Override

@@ -10,6 +10,7 @@ import org.greenrobot.greendao.database.Database;
 import coder.dasu.meizi.data.dao.DaoMaster;
 import coder.dasu.meizi.data.dao.DaoSession;
 
+
 /**
  * Created by dasu on 2016/8/25.
  */

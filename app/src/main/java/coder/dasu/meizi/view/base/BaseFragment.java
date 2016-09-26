@@ -10,6 +10,20 @@ import coder.dasu.meizi.data.dao.DaoSession;
  */
 public abstract class BaseFragment extends Fragment {
 
+    protected String mFragmentValue;
+
     protected static DaoSession mDaoSession = MeiziApp.getDaoSession();
+
+    public BaseFragment(){}
+
+    public BaseFragment(String value){
+        mFragmentValue = value;
+    }
+
+    public String getValue() {
+        return mFragmentValue;
+    }
+
+    public void onToolbarDoubleClick(){}
 
 }
