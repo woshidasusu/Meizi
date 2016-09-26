@@ -1,17 +1,4 @@
 <resources>
     <string name="app_name">Meizi</string>
     <string name="action_settings">Settings</string>
-
-    <!-- 干货类型 -->
-    <string-array name="gank_type">
-        <item>每日干货</item>
-        <item>Android</item>
-        <item>iOS</item>
-        <item>休息视频</item>
-        <item>福利</item>
-        <item>拓展资源</item>
-        <item>前端</item>
-        <item>瞎推荐</item>
-        <item>App</item>
-    </string-array>
 </resources>
