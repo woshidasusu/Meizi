@@ -177,6 +177,7 @@ public class TimeUtils {
      */
     public static final SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
+    public static final SimpleDateFormat DAY_SDF = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     /**
      * 将时间戳转为时间字符串

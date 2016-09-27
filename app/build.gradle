@@ -20,10 +20,9 @@ android {
     }
 
     greendao{
-        schemaVersion 3
+        schemaVersion 4
         daoPackage 'coder.dasu.meizi.data.dao'
         targetGenDir'src/main/java'
-        generateTests false
     }
 }
 

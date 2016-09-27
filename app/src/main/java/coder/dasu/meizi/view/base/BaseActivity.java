@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import coder.dasu.meizi.MeiziApp;
 import coder.dasu.meizi.R;
+import coder.dasu.meizi.data.dao.DaoSession;
 import coder.dasu.meizi.listener.ISwipeRefreshListener;
 
 /**
@@ -16,6 +18,8 @@ import coder.dasu.meizi.listener.ISwipeRefreshListener;
 public abstract class BaseActivity extends AppCompatActivity implements ISwipeRefreshListener {
 
     private static final String TAG = "BaseActivity";
+
+    protected static DaoSession mDaoSession = MeiziApp.getDaoSession();
 
     protected boolean mRefreshEnable = false;
 

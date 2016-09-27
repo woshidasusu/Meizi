@@ -9,6 +9,7 @@ import org.greenrobot.greendao.database.Database;
 
 import coder.dasu.meizi.data.dao.DaoMaster;
 import coder.dasu.meizi.data.dao.DaoSession;
+import coder.dasu.meizi.utils.SPUtils;
 
 
 /**
@@ -21,6 +22,10 @@ public class MeiziApp extends Application {
     private static DaoSession mDaoSession;
     private static Context mContext;
 
+    private static SPUtils mConfigSP;
+
+    private String spConfigName = "config";
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -29,6 +34,7 @@ public class MeiziApp extends Application {
 
         mContext = getApplicationContext();
         initGreenDao();
+        mConfigSP = new SPUtils(mContext, spConfigName);
     }
 
     private void initGreenDao() {
@@ -49,6 +55,10 @@ public class MeiziApp extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
+    }
+
+    public static SPUtils getConfigSP() {
+        return mConfigSP;
     }
 
 }
