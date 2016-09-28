@@ -3,6 +3,9 @@ android小白练手项目---妹子App
 
 ##目前进展
 
+**2016-9-28**
+添加干货（android）的布局（待完善）
+
 **2016-9-26**
 添加Tablayout + ViewPager布局
 
@@ -15,7 +18,7 @@ android小白练手项目---妹子App
 
 效果：  
 ![](./picture/meizi2.jpg)
-
+![](./picture/meizi3.jpg)
 
 
 
