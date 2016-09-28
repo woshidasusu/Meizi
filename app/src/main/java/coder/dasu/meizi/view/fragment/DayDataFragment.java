@@ -8,20 +8,28 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.view.base.SwipeRefreshFragment;
 
 /**
  * Created by dasu on 2016/9/26.
  * https://github.com/woshidasusu/Meizi
  */
-public class DayDataFragment extends SwipeRefreshFragment {
+public class DayDataFragment extends GankDataFragment {
 
     private static final String TAG = DayDataFragment.class.getSimpleName();
 
-    public DayDataFragment(String value) {
-        super(value);
+    public DayDataFragment(String type) {
+        mType = type;
     }
 
+    @Override
+    public String getTAG() {
+        return TAG;
+    }
+
+    @Override
+    public String getType() {
+        return mType;
+    }
 
     @Nullable
     @Override
@@ -31,8 +39,5 @@ public class DayDataFragment extends SwipeRefreshFragment {
         return view;
     }
 
-    @Override
-    public void loadData() {
 
-    }
 }

@@ -1,5 +1,6 @@
 package coder.dasu.meizi.net;
 
+import coder.dasu.meizi.data.bean.Data;
 import coder.dasu.meizi.data.bean.Meizi;
 import coder.dasu.meizi.net.response.GankDataResponse;
 import coder.dasu.meizi.net.response.GankResponse;
@@ -33,6 +34,7 @@ public interface GankApi {
     @GET("day/history")
     Call<GankResponse<String>> getGankDay();
 
-
+    @GET("data/{type}/{count}/{page}")
+    Call<GankDataResponse<Data>> getData(@Path("type") String type, @Path("count") int count, @Path("page") int page);
 
 }

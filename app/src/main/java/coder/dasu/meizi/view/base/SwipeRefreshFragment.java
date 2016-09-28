@@ -14,10 +14,6 @@ public abstract class SwipeRefreshFragment extends BaseFragment{
 
     }
 
-    public SwipeRefreshFragment(String value) {
-        super(value);
-    }
-
     public abstract void loadData();
 
     @Override

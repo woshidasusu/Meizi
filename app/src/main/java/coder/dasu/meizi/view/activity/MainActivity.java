@@ -24,7 +24,7 @@ import butterknife.OnClick;
 import coder.dasu.meizi.AppConstant;
 import coder.dasu.meizi.MeiziApp;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.data.bean.GankDayHistory;
+import coder.dasu.meizi.data.bean.DayPublish;
 import coder.dasu.meizi.listener.IMainAF;
 import coder.dasu.meizi.net.GankApi;
 import coder.dasu.meizi.net.GankRetrofit;
@@ -35,6 +35,7 @@ import coder.dasu.meizi.view.FragmentFactory.FragmentKey;
 import coder.dasu.meizi.view.base.BaseActivity;
 import coder.dasu.meizi.view.base.BaseFragment;
 import coder.dasu.meizi.view.base.SwipeRefreshFragment;
+import coder.dasu.meizi.view.fragment.GankDataFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +46,7 @@ public class MainActivity extends BaseActivity implements IMainAF {
 
     private long mFirstClickTime;
     private String mLastUpdateDay;
-    private List<BaseFragment> mFragmentList;
+    private List<GankDataFragment> mFragmentList;
     private List<String> mGankDayList;
 
     @InjectView(R.id.main_tab_layout)
@@ -84,8 +85,8 @@ public class MainActivity extends BaseActivity implements IMainAF {
         mLastUpdateDay = MeiziApp.getConfigSP().getString(AppConstant.GANK_DAY_LAST_UPDATE_TIME);
 
         mGankDayList = new ArrayList<>();
-        QueryBuilder<GankDayHistory> qb = mDaoSession.getGankDayHistoryDao().queryBuilder();
-        for (GankDayHistory day:qb.list()) {
+        QueryBuilder<DayPublish> qb = mDaoSession.getDayPublishDao().queryBuilder();
+        for (DayPublish day:qb.list()) {
             mGankDayList.add(day.getDay());
         }
     }
@@ -145,13 +146,13 @@ public class MainActivity extends BaseActivity implements IMainAF {
                             TimeUtils.getCurTimeString(TimeUtils.DAY_SDF));
                     List<String> strList = response.body().results;
                     strList.removeAll(mGankDayList);
-                    List<GankDayHistory> dayList = new ArrayList<>();
+                    List<DayPublish> dayList = new ArrayList<>();
                     for (String s:strList) {
-                        GankDayHistory day = new GankDayHistory();
+                        DayPublish day = new DayPublish();
                         day.setDay(s);
                         dayList.add(day);
                     }
-                    mDaoSession.getGankDayHistoryDao().insertInTx(dayList);
+                    mDaoSession.getDayPublishDao().insertInTx(dayList);
                 }
             }
 
@@ -184,7 +185,7 @@ public class MainActivity extends BaseActivity implements IMainAF {
 
             @Override
             public CharSequence getPageTitle(int position) {
-                return mFragmentList.get(position).getValue();
+                return mFragmentList.get(position).getType();
             }
         };
     }

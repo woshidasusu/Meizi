@@ -15,7 +15,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.data.bean.Meizi;
+import coder.dasu.meizi.data.bean.Data;
 import coder.dasu.meizi.listener.OnItemClickListener;
 import coder.dasu.meizi.view.widgets.RatioImageView;
 
@@ -24,11 +24,11 @@ import coder.dasu.meizi.view.widgets.RatioImageView;
  */
 public class MeiziWallAdapter extends RecyclerView.Adapter<MeiziWallAdapter.ViewHolder> {
 
-    private List<Meizi> mMeizhiList;
+    private List<Data> mMeizhiList;
     private Context mContext;
     private OnItemClickListener mItemClickListener;
 
-    public MeiziWallAdapter(Context context, List<Meizi> list) {
+    public MeiziWallAdapter(Context context, List<Data> list) {
         mContext = context;
         mMeizhiList = list;
     }
@@ -76,7 +76,7 @@ public class MeiziWallAdapter extends RecyclerView.Adapter<MeiziWallAdapter.View
         TextView meizhiText;
 
         View mItemView;
-        Meizi mMeizhi;
+        Data mMeizhi;
 
         public ViewHolder(View itemView) {
             super(itemView);

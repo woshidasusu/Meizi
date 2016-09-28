@@ -1,34 +1,36 @@
 package coder.dasu.meizi.view.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.view.base.SwipeRefreshFragment;
 
 /**
  * Created by dasu on 2016/9/26.
  * https://github.com/woshidasusu/Meizi
  */
-public class WebDataFragment extends SwipeRefreshFragment {
+public class WebDataFragment extends GankDataFragment {
 
     private static final String TAG = WebDataFragment.class.getSimpleName();
 
-    public WebDataFragment(String value) {
-        super(value);
+    public WebDataFragment(String type) {
+        mType = type;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.d(TAG, "onAttach()");
+    public String getType() {
+        return mType;
     }
+
+    @Override
+    public String getTAG() {
+        return TAG;
+    }
+
 
     @Nullable
     @Override
@@ -36,12 +38,6 @@ public class WebDataFragment extends SwipeRefreshFragment {
         View view = inflater.inflate(R.layout.fragment_web, container, false);
         ButterKnife.inject(this, view);
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart()");
     }
 
     @Override

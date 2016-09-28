@@ -8,18 +8,27 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.view.base.SwipeRefreshFragment;
 
 /**
  * Created by dasu on 2016/9/26.
  * https://github.com/woshidasusu/Meizi
  */
-public class PushDataFragment extends SwipeRefreshFragment {
+public class PushDataFragment extends GankDataFragment {
 
     private static final String TAG = PushDataFragment.class.getSimpleName();
 
-    public PushDataFragment(String value) {
-        super(value);
+    public PushDataFragment(String type) {
+        mType = type;
+    }
+
+    @Override
+    public String getType() {
+        return mType;
+    }
+
+    @Override
+    public String getTAG() {
+        return TAG;
     }
 
     @Nullable

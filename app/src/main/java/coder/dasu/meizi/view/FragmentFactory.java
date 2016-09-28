@@ -1,10 +1,10 @@
 package coder.dasu.meizi.view;
 
-import coder.dasu.meizi.view.base.BaseFragment;
 import coder.dasu.meizi.view.fragment.AndroidDataFragment;
 import coder.dasu.meizi.view.fragment.AppDataFragment;
 import coder.dasu.meizi.view.fragment.DayDataFragment;
 import coder.dasu.meizi.view.fragment.ExpandDataFragment;
+import coder.dasu.meizi.view.fragment.GankDataFragment;
 import coder.dasu.meizi.view.fragment.IosDataFragment;
 import coder.dasu.meizi.view.fragment.MeiziDataFragment;
 import coder.dasu.meizi.view.fragment.PushDataFragment;
@@ -46,7 +46,7 @@ public class FragmentFactory {
         }
     }
 
-    public BaseFragment newFragment(String value) {
+    public GankDataFragment newFragment(String value) {
         FragmentKey key = FragmentKey.getKey(value);
         if (key == null) {
             throw new UnsupportedOperationException("FragmentKey 无法识别");
