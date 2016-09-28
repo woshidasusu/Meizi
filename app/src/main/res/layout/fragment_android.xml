@@ -4,11 +4,9 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Android"
-        android:gravity="center"
-        android:textSize="48sp"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

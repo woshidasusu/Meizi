@@ -17,6 +17,7 @@ import coder.dasu.meizi.R;
 import coder.dasu.meizi.data.bean.Data;
 import coder.dasu.meizi.listener.IMainAF;
 import coder.dasu.meizi.listener.OnItemClickListener;
+import coder.dasu.meizi.utils.ListUtils;
 import coder.dasu.meizi.view.adapter.MeiziWallAdapter;
 
 /**
@@ -66,7 +67,7 @@ public class MeiziDataFragment extends GankDataFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if (mDataList.isEmpty()) {
+            if (ListUtils.isEmpty(mDataList)) {
                 setRefresh(true);
                 loadServiceData(false);
             }

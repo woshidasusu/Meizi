@@ -9,6 +9,6 @@ import coder.dasu.meizi.data.bean.Data;
  */
 public interface OnItemClickListener {
 
-    void onItemClick(View view, View picture, View text, Data meizhi);
+    void onItemClick(View view, View picture, View text, Data data);
 
 }

@@ -62,23 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ISwipeRe
         if (mSwipeRefreshLayout == null) {
             return;
         }
-        if (mSwipeRefreshLayout.isRefreshing() && enable) {
-            return;
-        }
-        if (!mSwipeRefreshLayout.isRefreshing() && !enable) {
-            return;
-        }
-        if (!enable) {
-            //手动延长刷新时间
-            mSwipeRefreshLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-            }, 1000);
-        } else {
-            mSwipeRefreshLayout.setRefreshing(true);
-        }
+        mSwipeRefreshLayout.setRefreshing(enable);
     }
 
     public boolean isRefreshing(){

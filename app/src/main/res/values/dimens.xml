@@ -3,4 +3,14 @@
     <dimen name="activity_horizontal_margin">8dp</dimen>
     <dimen name="activity_vertical_margin">5dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="item_padding">16dp</dimen>
+    <dimen name="padding_small">5dp</dimen>
+
+    <dimen name="widget_margin_normal">10dp</dimen>
+
+
+    <dimen name="text_size_big">24sp</dimen>
+    <dimen name="text_size_normal">18sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
 </resources>

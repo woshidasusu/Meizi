@@ -2,9 +2,7 @@ package coder.dasu.meizi.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,14 +87,7 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
     }
 
     protected void onLoadServiceDataFailure() {
-        Snackbar.make(getView(), "加载失败,请重试", Snackbar.LENGTH_INDEFINITE)
-                .setAction("重试", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        loadServiceData(false);
-                    }
-                })
-                .show();
+
     }
 
     protected void onLoadServiceDataSuccess() {

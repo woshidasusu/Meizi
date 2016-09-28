@@ -33,7 +33,6 @@ import coder.dasu.meizi.utils.TimeUtils;
 import coder.dasu.meizi.view.FragmentFactory;
 import coder.dasu.meizi.view.FragmentFactory.FragmentKey;
 import coder.dasu.meizi.view.base.BaseActivity;
-import coder.dasu.meizi.view.base.BaseFragment;
 import coder.dasu.meizi.view.base.SwipeRefreshFragment;
 import coder.dasu.meizi.view.fragment.GankDataFragment;
 import retrofit2.Call;
@@ -61,18 +60,21 @@ public class MainActivity extends BaseActivity implements IMainAF {
 
         ButterKnife.inject(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        initToolbar();
 
         initVariable();
         bindWidgets();
         loadServiceData();
     }
 
-
     @Override
     public int provideContentView() {
         return R.layout.activity_main;
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     public void initVariable() {
