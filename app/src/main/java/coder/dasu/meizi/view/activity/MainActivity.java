@@ -3,10 +3,6 @@ package coder.dasu.meizi.view.activity;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -32,8 +28,8 @@ import coder.dasu.meizi.net.response.GankResponse;
 import coder.dasu.meizi.utils.TimeUtils;
 import coder.dasu.meizi.view.FragmentFactory;
 import coder.dasu.meizi.view.FragmentFactory.FragmentKey;
+import coder.dasu.meizi.view.adapter.GankPagerFragmentAdapter;
 import coder.dasu.meizi.view.base.BaseActivity;
-import coder.dasu.meizi.view.base.SwipeRefreshFragment;
 import coder.dasu.meizi.view.fragment.GankDataFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +41,7 @@ public class MainActivity extends BaseActivity implements IMainAF {
 
     private long mFirstClickTime;
     private String mLastUpdateDay;
+    private GankPagerFragmentAdapter mFragmentAdapter;
     private List<GankDataFragment> mFragmentList;
     private List<String> mGankDayList;
 
@@ -83,6 +80,7 @@ public class MainActivity extends BaseActivity implements IMainAF {
         for (FragmentKey key: FragmentKey.values()) {
             mFragmentList.add(factory.newFragment(key.getValue()));
         }
+        mFragmentAdapter = new GankPagerFragmentAdapter(getSupportFragmentManager(), mFragmentList);
 
         mLastUpdateDay = MeiziApp.getConfigSP().getString(AppConstant.GANK_DAY_LAST_UPDATE_TIME);
 
@@ -91,10 +89,11 @@ public class MainActivity extends BaseActivity implements IMainAF {
         for (DayPublish day:qb.list()) {
             mGankDayList.add(day.getDay());
         }
+
     }
 
     public void bindWidgets() {
-        mViewPager.setAdapter(getViewPagerAdapter());
+        mViewPager.setAdapter(mFragmentAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
@@ -118,24 +117,9 @@ public class MainActivity extends BaseActivity implements IMainAF {
     public void onToolbarDoubleClick() {
         long secClick = System.currentTimeMillis();
         if ((secClick - mFirstClickTime) < 1000) {
-            FragmentManager manager = getSupportFragmentManager();
-            for (Fragment fragment : manager.getFragments()) {
-                if (fragment instanceof SwipeRefreshFragment && fragment.isVisible()) {
-                    ((SwipeRefreshFragment) fragment).onToolbarDoubleClick();
-                }
-            }
+//            mFragmentAdapter.getCurrentFragment().onToolbarDoubleClick();
         }
         mFirstClickTime = secClick;
-    }
-
-    @Override
-    public void loadData() {
-        FragmentManager manager = getSupportFragmentManager();
-        for (Fragment fragment : manager.getFragments()) {
-            if (fragment instanceof SwipeRefreshFragment && fragment.isVisible()) {
-                ((SwipeRefreshFragment) fragment).loadData();
-            }
-        }
     }
 
     public Callback<GankResponse<String>> getLoadGankDayCallback() {
@@ -169,25 +153,6 @@ public class MainActivity extends BaseActivity implements IMainAF {
                             }
                         })
                         .show();
-            }
-        };
-    }
-
-    public PagerAdapter getViewPagerAdapter() {
-        return new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int position) {
-                return mFragmentList.get(position);
-            }
-
-            @Override
-            public int getCount() {
-                return mFragmentList.size();
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return mFragmentList.get(position).getType();
             }
         };
     }

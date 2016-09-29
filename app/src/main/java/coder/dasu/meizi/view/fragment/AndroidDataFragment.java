@@ -70,16 +70,10 @@ public class AndroidDataFragment extends GankDataFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            if (isRefreshing()) {
-                setRefresh(true);
-                return;
-            }
-            if (ListUtils.isEmpty(mDataList)) {
+            if (ListUtils.isEmpty(mDataList) && !isRefreshing()) {
                 setRefresh(true);
                 loadServiceData(false);
             }
-        } else {
-            setRefresh(false);
         }
     }
 
@@ -103,8 +97,11 @@ public class AndroidDataFragment extends GankDataFragment {
 
     @Override
     protected void onLoadServiceDataSuccess() {
-        super.onLoadServiceDataSuccess();
         mDataAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onLoadServiceDataFailure() {
     }
 
     public OnItemClickListener getOnItemClick() {

@@ -39,5 +39,4 @@ public class DayDataFragment extends GankDataFragment {
         return view;
     }
 
-
 }

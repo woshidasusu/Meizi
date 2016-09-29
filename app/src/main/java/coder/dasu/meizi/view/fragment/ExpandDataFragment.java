@@ -39,5 +39,4 @@ public class ExpandDataFragment extends GankDataFragment {
         ButterKnife.inject(this, view);
         return view;
     }
-
 }

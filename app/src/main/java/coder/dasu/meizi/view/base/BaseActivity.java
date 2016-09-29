@@ -2,29 +2,24 @@ package coder.dasu.meizi.view.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import coder.dasu.meizi.MeiziApp;
-import coder.dasu.meizi.R;
 import coder.dasu.meizi.data.dao.DaoSession;
-import coder.dasu.meizi.listener.ISwipeRefreshListener;
 
 /**
  * Created by dasu on 2016/8/25.
+ * https://github.com/woshidasusu/Meizi
+ *
+ * 1、提供唯一的 DaoSession数据库访问接口
  */
-public abstract class BaseActivity extends AppCompatActivity implements ISwipeRefreshListener {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String TAG = "BaseActivity";
 
     protected static DaoSession mDaoSession = MeiziApp.getDaoSession();
 
-    protected boolean mRefreshEnable = false;
-
-    @InjectView(R.id.refresh_layout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,40 +27,8 @@ public abstract class BaseActivity extends AppCompatActivity implements ISwipeRe
         setContentView(provideContentView());
 
         ButterKnife.inject(this);
-        initSwipeRefresh();
     }
 
     public abstract int provideContentView();
 
-    private void initSwipeRefresh() {
-        if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.deeppink),
-                    getResources().getColor(R.color.tomato),
-                    getResources().getColor(R.color.red));
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    loadData();
-                }
-            });
-
-            mSwipeRefreshLayout.setEnabled(mRefreshEnable);
-        }
-    }
-
-    public void setRefreshEnable(boolean enable) {
-        mSwipeRefreshLayout.setEnabled(enable);
-    }
-
-    @Override
-    public void setRefresh(boolean enable) {
-        if (mSwipeRefreshLayout == null) {
-            return;
-        }
-        mSwipeRefreshLayout.setRefreshing(enable);
-    }
-
-    public boolean isRefreshing(){
-        return mSwipeRefreshLayout.isRefreshing();
-    }
 }

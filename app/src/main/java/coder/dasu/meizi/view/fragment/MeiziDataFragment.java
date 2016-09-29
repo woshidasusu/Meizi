@@ -112,14 +112,10 @@ public class MeiziDataFragment extends GankDataFragment {
 
     @Override
     protected void onLoadServiceDataSuccess() {
-        super.onLoadServiceDataSuccess();
         mMeiziAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected void onLoadServiceDataFailure() {
-        super.onLoadServiceDataFailure();
-    }
+
 
     @Override
     public void onToolbarDoubleClick() {
