@@ -34,13 +34,16 @@ public class PushDataFragment extends GankDataFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_push, container, false);
-        ButterKnife.inject(this, view);
-        return view;
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_push, container, false);
+            ButterKnife.inject(this, rootView);
+            bindWidgets();
+        }
+        return rootView;
     }
 
-    @Override
-    public void loadData() {
+    private void bindWidgets() {
 
     }
+
 }

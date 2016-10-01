@@ -60,22 +60,26 @@ public class AndroidDataFragment extends GankDataFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_android, container, false);
-        ButterKnife.inject(this, view);
-        bindWidgets();
-        return view;
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_android, container, false);
+            ButterKnife.inject(this, rootView);
+            bindWidgets();
+        }
+        return rootView;
     }
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+    protected void onFragmentVisibleChange(boolean isVisible) {
+        super.onFragmentVisibleChange(isVisible);
+        if (isVisible) {
             if (ListUtils.isEmpty(mDataList) && !isRefreshing()) {
                 setRefresh(true);
                 loadServiceData(false);
             }
         }
     }
+
+
 
     private void bindWidgets() {
         LinearLayoutManager manager = new LinearLayoutManager(mContext);
@@ -87,21 +91,13 @@ public class AndroidDataFragment extends GankDataFragment {
     }
 
     @Override
-    public void onToolbarDoubleClick() {
-        super.onToolbarDoubleClick();
-        if (ListUtils.isEmpty(mDataList)) {
-            return;
-        }
-        mAndroidDataView.smoothScrollToPosition(0);
-    }
-
-    @Override
     protected void onLoadServiceDataSuccess() {
         mDataAdapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onLoadServiceDataFailure() {
+
     }
 
     public OnItemClickListener getOnItemClick() {

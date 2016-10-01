@@ -13,17 +13,18 @@ import coder.dasu.meizi.MeiziApp;
 import coder.dasu.meizi.data.dao.DaoSession;
 
 /**
- * Created by sxq on 2016/9/13.
+ * Created by dasu on 2016/9/13.
+ * https://github.com/woshidasusu/Meizi
  */
 public abstract class BaseFragment extends Fragment {
 
     protected static DaoSession mDaoSession = MeiziApp.getDaoSession();
 
-    public BaseFragment(){}
-
-    public void onToolbarDoubleClick(){}
+    protected View rootView;
 
     public abstract String getTAG();
+
+    public BaseFragment(){}
 
     @Override
     public void onAttach(Context context) {
@@ -74,10 +75,16 @@ public abstract class BaseFragment extends Fragment {
         Log.v(getTAG(), " -> onStop()");
     }
 
+    /**
+     * 已经有父容器的view不能再添加到其他容器中去，所以必须得先移除它的容器才能再添加。
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         Log.v(getTAG(), " -> onDestroyView()");
+        if (rootView != null) {
+            ((ViewGroup) rootView.getParent()).removeView(rootView);
+        }
     }
 
     @Override

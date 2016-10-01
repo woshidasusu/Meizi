@@ -1,77 +1,53 @@
 package coder.dasu.meizi.view.base;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.content.Context;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import coder.dasu.meizi.R;
 import coder.dasu.meizi.listener.ISwipeRefreshListener;
 
 /**
  * Created by dasu on 2016/9/25.
  * https://github.com/woshidasusu/Meizi
  *
- * 1、提供SwipeRefresh功能，通过{@link ISwipeRefreshListener#setRefresh(boolean)} 来 启动/关闭 加载动画
- *   启动加载动画时，会触发{@link ISwipeRefreshListener#loadData()} 方法，在子类里重写该方法实现具体加载任务
  */
-public abstract class SwipeRefreshFragment extends BaseFragment implements ISwipeRefreshListener{
+public abstract class SwipeRefreshFragment extends BaseFragment {
 
-    public SwipeRefreshFragment() {
-
-    }
-
-    @InjectView(R.id.refresh_layout)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    private ISwipeRefreshListener mRefreshProxy;
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ButterKnife.inject(this, getView());
-        initSwipeRefresh();
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (!(context instanceof ISwipeRefreshListener)) {
+            throw new UnsupportedOperationException(context.getClass().getSimpleName() + " 没有实现 ISwipeRefreshListener 接口");
+        }
+        mRefreshProxy = (ISwipeRefreshListener) context;
     }
 
-    private void initSwipeRefresh() {
-        if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.deeppink),
-                    getResources().getColor(R.color.tomato),
-                    getResources().getColor(R.color.red));
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    loadData();
-                }
-            });
+    protected void setRefresh(boolean enable) {
+        if (mRefreshProxy != null) {
+            mRefreshProxy.setRefresh(enable);
         }
     }
 
-    @Override
-    public void setRefresh(boolean enable) {
-        if (mSwipeRefreshLayout == null) {
-            return;
+    protected boolean isRefreshing() {
+        if (mRefreshProxy != null) {
+            return mRefreshProxy.isRefreshing();
         }
-        if (mSwipeRefreshLayout.isRefreshing() && enable) {
-            return;
-        }
-        if (!mSwipeRefreshLayout.isRefreshing() && !enable) {
-            return;
-        }
-        if (!enable) {
-            //手动延长刷新时间
-            mSwipeRefreshLayout.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-            }, 5000);
-        } else {
-            mSwipeRefreshLayout.setRefreshing(true);
+        return false;
+    }
+
+    protected void dismissAnimation() {
+        if (mRefreshProxy != null) {
+            mRefreshProxy.dismissAnimation();
         }
     }
 
-    public boolean isRefreshing(){
-        return mSwipeRefreshLayout.isRefreshing();
-    }
+    /**************************************************************
+     *  自定义的回调方法，子类可根据需求重写
+     *************************************************************/
+
+    /**
+     * 当触发下拉刷新手势时会回调该方法
+     */
+    public abstract void loadData();
 
 }

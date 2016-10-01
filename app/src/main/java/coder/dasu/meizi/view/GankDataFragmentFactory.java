@@ -15,12 +15,12 @@ import coder.dasu.meizi.view.fragment.WebDataFragment;
  * Created by dasu on 2016/9/26.
  * https://github.com/woshidasusu/Meizi
  */
-public class FragmentFactory {
+public class GankDataFragmentFactory {
 
-    private static final String TAG = FragmentFactory.class.getSimpleName();
+    private static final String TAG = GankDataFragmentFactory.class.getSimpleName();
 
     /**
-     * Fragment key
+     * Gank data Fragment key
      */
     public enum FragmentKey {
         Day("每日干货"), Android("Android"), Ios("iOS"), Video("休息视频"), Meizi("福利"),

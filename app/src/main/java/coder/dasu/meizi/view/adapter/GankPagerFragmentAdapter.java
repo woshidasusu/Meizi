@@ -15,7 +15,7 @@ import coder.dasu.meizi.view.fragment.GankDataFragment;
  */
 public class GankPagerFragmentAdapter extends FragmentPagerAdapter {
 
-//    private GankDataFragment mCurrentFragment;
+    private GankDataFragment mCurrentFragment;
     private List<GankDataFragment> mFragmentList;
 
 
@@ -42,10 +42,10 @@ public class GankPagerFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         super.setPrimaryItem(container, position, object);
-//        mCurrentFragment = (GankDataFragment) object;
+        mCurrentFragment = (GankDataFragment) object;
     }
 
-//    public GankDataFragment getCurrentFragment() {
-//        return mCurrentFragment;
-//    }
+    public GankDataFragment getCurrentFragment() {
+        return mCurrentFragment;
+    }
 }

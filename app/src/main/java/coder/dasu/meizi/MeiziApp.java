@@ -3,8 +3,7 @@ package coder.dasu.meizi;
 import android.app.Application;
 import android.content.Context;
 
-import com.squareup.picasso.Picasso;
-
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.greendao.database.Database;
 
 import coder.dasu.meizi.data.dao.DaoMaster;
@@ -21,6 +20,7 @@ public class MeiziApp extends Application {
 
     private static DaoSession mDaoSession;
     private static Context mContext;
+    private static EventBus mEventBus;
 
     private static SPUtils mConfigSP;
 
@@ -29,12 +29,16 @@ public class MeiziApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Picasso.with(getApplicationContext())
-                .setDebugging(true);
 
         mContext = getApplicationContext();
         initGreenDao();
         mConfigSP = new SPUtils(mContext, spConfigName);
+        mEventBus = EventBus.builder().build();
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
     }
 
     private void initGreenDao() {
@@ -52,13 +56,11 @@ public class MeiziApp extends Application {
         return mContext;
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-    }
-
     public static SPUtils getConfigSP() {
         return mConfigSP;
     }
 
+    public static EventBus getEventBus() {
+        return mEventBus;
+    }
 }

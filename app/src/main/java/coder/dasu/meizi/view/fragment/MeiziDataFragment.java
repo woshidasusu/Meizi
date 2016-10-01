@@ -1,6 +1,5 @@
 package coder.dasu.meizi.view.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -15,7 +14,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import coder.dasu.meizi.R;
 import coder.dasu.meizi.data.bean.Data;
-import coder.dasu.meizi.listener.IMainAF;
 import coder.dasu.meizi.listener.OnItemClickListener;
 import coder.dasu.meizi.utils.ListUtils;
 import coder.dasu.meizi.view.adapter.MeiziWallAdapter;
@@ -30,30 +28,18 @@ public class MeiziDataFragment extends GankDataFragment {
 
     private MeiziWallAdapter mMeiziAdapter;
 
-    private Context mContext;
-    private IMainAF mControler;
-
     @InjectView(R.id.rv_meizi_photo_wall)
     RecyclerView mMeiziWallView;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (!(context instanceof IMainAF)) {
-            throw new UnsupportedOperationException(context.getClass().getSimpleName()
-                    + " does not implements IMainAF interface");
-        }
-        mControler = (IMainAF) context;
-        mContext = context;
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_meizi, container, false);
-        ButterKnife.inject(this, view);
-        initView();
-        return view;
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_meizi, container, false);
+            ButterKnife.inject(this, rootView);
+            bindWidgets();
+        }
+        return rootView;
     }
 
 
@@ -64,9 +50,10 @@ public class MeiziDataFragment extends GankDataFragment {
 
 
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
+    protected void onFragmentVisibleChange(boolean isVisible) {
+        super.onFragmentVisibleChange(isVisible);
+        Log.d(TAG, "onFragmentVisibleChange() -> isVisiable: " + isVisible);
+        if (isVisible) {
             if (ListUtils.isEmpty(mDataList)) {
                 setRefresh(true);
                 loadServiceData(false);
@@ -74,11 +61,11 @@ public class MeiziDataFragment extends GankDataFragment {
         }
     }
 
-    private void initView() {
+    private void bindWidgets() {
         final StaggeredGridLayoutManager layoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mMeiziWallView.setLayoutManager(layoutManager);
-        mMeiziAdapter = new MeiziWallAdapter(mContext, mDataList);
+        mMeiziAdapter = new MeiziWallAdapter(getActivity(), mDataList);
         mMeiziWallView.setAdapter(mMeiziAdapter);
         mMeiziAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -116,11 +103,6 @@ public class MeiziDataFragment extends GankDataFragment {
     }
 
 
-
-    @Override
-    public void onToolbarDoubleClick() {
-        mMeiziWallView.smoothScrollToPosition(0);
-    }
 
     @Override
     public String getType() {
