@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import retrofit2.Response;
  * Created by dasu on 2016/9/27.
  * https://github.com/woshidasusu/Meizi
  *
- * Viewpager + Fragment形式，所以fragment的生命周期因Viewpager的缓存机制而失去了具体意义
+ * Viewpager + Fragment情况下，fragment的生命周期因Viewpager的缓存机制而失去了具体意义
  * 该抽象类自定义一个新的回调方法，当fragment可见状态改变时会触发的回调方法，介绍看下面
  *
  * @see #onFragmentVisibleChange(boolean)
@@ -45,6 +46,7 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        Log.d(getTAG(), "setUserVisibleHint() -> isVisibleToUser: " + isVisibleToUser);
         if (rootView == null) {
             return;
         }
@@ -134,8 +136,9 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
     @Override
     public void loadData() {
 //        mLoadPage = 1;
-//        loadServiceData(true);
+//       loadServiceData(true);
         isLoadingData = true;
+        Toast.makeText(getActivity(), "开始加载..." ,Toast.LENGTH_SHORT).show();
     }
 
     /**

@@ -46,8 +46,4 @@ public class IosDataFragment extends GankDataFragment {
 
     }
 
-    @Override
-    public void loadData() {
-
-    }
 }

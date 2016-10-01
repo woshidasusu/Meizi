@@ -52,7 +52,6 @@ public class MeiziDataFragment extends GankDataFragment {
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
-        Log.d(TAG, "onFragmentVisibleChange() -> isVisiable: " + isVisible);
         if (isVisible) {
             if (ListUtils.isEmpty(mDataList)) {
                 setRefresh(true);
