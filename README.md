@@ -20,7 +20,7 @@ android小白练手项目---妹子App
 引入Glidet图片框架
 
 效果：  
-![](./picture/meizi3.gif)
+![](./picture/meizi4.gif)
 ![](./picture/meizi2.jpg)
 ![](./picture/meizi3.jpg)
 
