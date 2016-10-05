@@ -28,9 +28,9 @@ public class GankRetrofit {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
-                .retryOnConnectionFailure(true)
-                .connectTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(12, TimeUnit.SECONDS)
                 .build();
+
 
         //init retrofit
         Retrofit retrofit = new Retrofit.Builder()

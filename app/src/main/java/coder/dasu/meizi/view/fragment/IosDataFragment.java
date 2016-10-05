@@ -1,13 +1,24 @@
 package coder.dasu.meizi.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
+import coder.dasu.meizi.AppConstant;
+import coder.dasu.meizi.MeiziApp;
 import coder.dasu.meizi.R;
+import coder.dasu.meizi.data.entity.Data;
+import coder.dasu.meizi.listener.OnItemClickListener;
+import coder.dasu.meizi.utils.ListUtils;
+import coder.dasu.meizi.view.adapter.AndroidDataAdapter;
 
 /**
  * Created by dasu on 2016/9/26.
@@ -16,6 +27,12 @@ import coder.dasu.meizi.R;
 public class IosDataFragment extends GankDataFragment {
 
     private static final String TAG = IosDataFragment.class.getSimpleName();
+
+    private AndroidDataAdapter mDataAdapter;
+    private Context mContext;
+
+    @InjectView(R.id.rv_ios)
+    RecyclerView mAndroidDataView;
 
     public IosDataFragment(String type) {
         mType = type;
@@ -27,8 +44,19 @@ public class IosDataFragment extends GankDataFragment {
     }
 
     @Override
+    public String getLocalLatestIssue() {
+        return MeiziApp.getConfigSP().getString(AppConstant.GANK_IOS_LATEST_UPDATE_TIME);
+    }
+
+    @Override
     public String getTAG() {
         return TAG;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Nullable
@@ -42,8 +70,45 @@ public class IosDataFragment extends GankDataFragment {
         return rootView;
     }
 
-    private void bindWidgets() {
+    @Override
+    protected void onFragmentVisibleChange(boolean isVisible) {
+        super.onFragmentVisibleChange(isVisible);
+        if (isVisible) {
+            if (ListUtils.isEmpty(mDataList) && !isLoadingData()) {
+                setRefresh(true);
+                loadServiceData(false);
+            }
+        }
+    }
 
+
+
+    private void bindWidgets() {
+        LinearLayoutManager manager = new LinearLayoutManager(mContext);
+        mAndroidDataView.setLayoutManager(manager);
+        mDataAdapter = new AndroidDataAdapter(getActivity(), mDataList);
+        mAndroidDataView.setAdapter(mDataAdapter);
+
+        mDataAdapter.setOnItemClickListener(getOnItemClick());
+    }
+
+    @Override
+    protected void onLoadServiceDataSuccess() {
+        mDataAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onLoadServiceDataFailure() {
+
+    }
+
+    public OnItemClickListener getOnItemClick() {
+        return new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, View picture, View text, Data data) {
+                Snackbar.make(view, data.getWho(), Snackbar.LENGTH_SHORT).show();
+            }
+        };
     }
 
 }

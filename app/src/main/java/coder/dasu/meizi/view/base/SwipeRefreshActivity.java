@@ -64,7 +64,7 @@ public abstract class SwipeRefreshActivity extends BaseActivity implements ISwip
                 public void run() {
                     mSwipeRefreshLayout.setRefreshing(true);
                 }
-            }, 300);
+            }, 10);
         }
     }
 

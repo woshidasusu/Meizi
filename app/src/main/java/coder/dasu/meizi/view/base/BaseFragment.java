@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import coder.dasu.meizi.MeiziApp;
 import coder.dasu.meizi.data.dao.DaoSession;
 
+
 /**
  * Created by dasu on 2016/9/13.
  * https://github.com/woshidasusu/Meizi

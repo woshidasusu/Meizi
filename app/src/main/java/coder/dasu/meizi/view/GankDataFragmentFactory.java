@@ -2,13 +2,11 @@ package coder.dasu.meizi.view;
 
 import coder.dasu.meizi.view.fragment.AndroidDataFragment;
 import coder.dasu.meizi.view.fragment.AppDataFragment;
-import coder.dasu.meizi.view.fragment.DayDataFragment;
+import coder.dasu.meizi.view.fragment.DayGankFragment;
 import coder.dasu.meizi.view.fragment.ExpandDataFragment;
 import coder.dasu.meizi.view.fragment.GankDataFragment;
 import coder.dasu.meizi.view.fragment.IosDataFragment;
-import coder.dasu.meizi.view.fragment.MeiziDataFragment;
 import coder.dasu.meizi.view.fragment.PushDataFragment;
-import coder.dasu.meizi.view.fragment.VideoDataFragment;
 import coder.dasu.meizi.view.fragment.WebDataFragment;
 
 /**
@@ -23,8 +21,8 @@ public class GankDataFragmentFactory {
      * Gank data Fragment key
      */
     public enum FragmentKey {
-        Day("每日干货"), Android("Android"), Ios("iOS"), Video("休息视频"), Meizi("福利"),
-        Expand("拓展资源"), Web("前端"), Push("瞎推荐"), App("App");
+        Day("每日干货"), Android("Android"), Ios("iOS"),
+        Web("前端"), Expand("拓展资源"),Push("瞎推荐"), App("App");
 
         String value;
 
@@ -53,15 +51,11 @@ public class GankDataFragmentFactory {
         }
         switch (key) {
             case Day:
-                return new DayDataFragment(key.getValue());
+                return new DayGankFragment(key.getValue());
             case Android:
                 return new AndroidDataFragment(key.getValue());
             case Ios:
                 return new IosDataFragment(key.getValue());
-            case Video:
-                return new VideoDataFragment(key.getValue());
-            case Meizi:
-                return new MeiziDataFragment(key.getValue());
             case Expand:
                 return new ExpandDataFragment(key.getValue());
             case Web:

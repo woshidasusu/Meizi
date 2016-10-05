@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import coder.dasu.meizi.AppConstant;
+import coder.dasu.meizi.MeiziApp;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.data.bean.Data;
+import coder.dasu.meizi.data.entity.Data;
 import coder.dasu.meizi.listener.OnItemClickListener;
 import coder.dasu.meizi.utils.ListUtils;
 import coder.dasu.meizi.view.adapter.AndroidDataAdapter;
@@ -57,6 +59,11 @@ public class AndroidDataFragment extends GankDataFragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public String getLocalLatestIssue() {
+        return MeiziApp.getConfigSP().getString(AppConstant.GANK_ANDROID_LATEST_UPDATE_TIME);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -72,9 +79,13 @@ public class AndroidDataFragment extends GankDataFragment {
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
         if (isVisible) {
-            if (ListUtils.isEmpty(mDataList) && !isRefreshing()) {
+            if (ListUtils.isEmpty(mDataList) && !isLoadingData()) {
                 setRefresh(true);
-                loadServiceData(false);
+                if (isNeedLoadServerData()) {
+                    loadServiceData(false);
+                } else {
+                    loadServiceData(false);
+                }
             }
         }
     }
@@ -92,6 +103,7 @@ public class AndroidDataFragment extends GankDataFragment {
 
     @Override
     protected void onLoadServiceDataSuccess() {
+        super.onLoadServiceDataSuccess();
         mDataAdapter.notifyDataSetChanged();
     }
 

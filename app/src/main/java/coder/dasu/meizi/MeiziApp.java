@@ -36,6 +36,8 @@ public class MeiziApp extends Application {
         mEventBus = EventBus.builder().build();
     }
 
+
+
     @Override
     public void onTerminate() {
         super.onTerminate();

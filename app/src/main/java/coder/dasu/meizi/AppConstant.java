@@ -11,6 +11,13 @@ public class AppConstant {
     /********************************************************************
      *************  config.xml sharePreference constant *****************
      ********************************************************************/
-    public static final String GANK_DAY_LAST_UPDATE_TIME = "gank_day_last_update_time";
+    //最后跟Gank服务器交互的时间
+    public static final String GANK_DAY_LATEST_UPDATE_TIME = "gank_day_latest_update_time";
+    //Gank服务器上发布的干货的最新一期时间
+    public static final String GANK_SERVER_LATEST_ISSUE_TIME = "gank_server_latest_issue_time";
+    //本地Android干货的最新一期时间，以下类似
+    public static final String GANK_ANDROID_LATEST_UPDATE_TIME = "gank_android_last_update_time";
+    public static final String GANK_IOS_LATEST_UPDATE_TIME = "gank_ios_last_update_time";
+
 
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:background="@drawable/bg_card"
+              android:orientation="vertical"
+              android:visibility="invisible"
+              tools:visibility="visible">
+
+    <coder.dasu.meizi.view.widgets.RatioImageView
+        android:id="@+id/day_gank_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:origin_width="50"
+        app:origin_height="50"
+        tools:src="@drawable/meizhi1"/>
+
+    <TextView
+        android:id="@+id/day_gank_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:ellipsize="end"
+        android:maxLines="5"
+        android:textAppearance="?android:textAppearanceSmall"
+        tools:text="09-07 你是一个人吗？"/>
+
+</LinearLayout>

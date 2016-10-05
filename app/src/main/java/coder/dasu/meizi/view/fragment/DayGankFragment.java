@@ -4,36 +4,47 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import coder.dasu.meizi.R;
 import coder.dasu.meizi.data.entity.Data;
+import coder.dasu.meizi.data.entity.DayPublish;
 import coder.dasu.meizi.listener.OnItemClickListener;
 import coder.dasu.meizi.utils.ListUtils;
-import coder.dasu.meizi.view.adapter.AndroidDataAdapter;
+import coder.dasu.meizi.view.adapter.DayGankAdapter;
 
 /**
  * Created by dasu on 2016/9/26.
  * https://github.com/woshidasusu/Meizi
  */
-public class VideoDataFragment extends GankDataFragment {
+public class DayGankFragment extends GankDataFragment {
 
-    private static final String TAG = VideoDataFragment.class.getSimpleName();
+    private static final String TAG = DayGankFragment.class.getSimpleName();
 
-    private AndroidDataAdapter mDataAdapter;
+    private DayGankAdapter mDataAdapter;
     private Context mContext;
+    private List<DayPublish> mDataList;
 
-    @InjectView(R.id.rv_video)
+    @InjectView(R.id.rv_day)
     RecyclerView mAndroidDataView;
 
-    public VideoDataFragment(String type) {
+    public DayGankFragment(String type) {
         mType = type;
+    }
+
+    @Override
+    public String getTAG() {
+        return TAG;
     }
 
     @Override
@@ -42,20 +53,16 @@ public class VideoDataFragment extends GankDataFragment {
     }
 
     @Override
-    public String getLocalLatestIssue() {
-        return null;
-    }
-
-    @Override
-    public String getTAG() {
-        return TAG;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initVariable();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.fragment_video, container, false);
+            rootView = inflater.inflate(R.layout.fragment_day_gank, container, false);
             ButterKnife.inject(this, rootView);
             bindWidgets();
         }
@@ -66,23 +73,52 @@ public class VideoDataFragment extends GankDataFragment {
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
         if (isVisible) {
-            if (ListUtils.isEmpty(mDataList) && !isLoadingData()) {
+            //todo isLoading?
+            if (ListUtils.isEmpty(mDataList)) {
                 setRefresh(true);
                 loadServiceData(false);
             }
         }
     }
 
-
+    private void initVariable() {
+        mDataList = new ArrayList<>();
+        mDaoSession.startAsyncSession().runInTx(new Runnable() {
+            @Override
+            public void run() {
+                mDataList.addAll(mDaoSession.getDayPublishDao().queryBuilder().list());
+                Collections.sort(mDataList);
+            }
+        });
+    }
 
     private void bindWidgets() {
-        LinearLayoutManager manager = new LinearLayoutManager(mContext);
-        mAndroidDataView.setLayoutManager(manager);
-        mDataAdapter = new AndroidDataAdapter(getActivity(), mDataList);
+        final StaggeredGridLayoutManager layoutManager =
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mAndroidDataView.setLayoutManager(layoutManager);
+        mDataAdapter = new DayGankAdapter(getActivity(), mDataList);
         mAndroidDataView.setAdapter(mDataAdapter);
 
         mDataAdapter.setOnItemClickListener(getOnItemClick());
     }
+
+
+    @Override
+    public void loadData() {
+
+    }
+
+    @Override
+    protected void loadServiceData(boolean clearCache) {
+
+    }
+
+    @Override
+    public String getLocalLatestIssue() {
+        return null;
+    }
+
+
 
     @Override
     protected void onLoadServiceDataSuccess() {

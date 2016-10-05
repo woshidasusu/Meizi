@@ -2,17 +2,20 @@ package coder.dasu.meizi.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import coder.dasu.meizi.data.bean.Data;
+import coder.dasu.meizi.AppConstant;
+import coder.dasu.meizi.MeiziApp;
+import coder.dasu.meizi.data.entity.Data;
 import coder.dasu.meizi.net.GankApi;
 import coder.dasu.meizi.net.GankRetrofit;
 import coder.dasu.meizi.net.response.GankDataResponse;
+import coder.dasu.meizi.utils.TimeUtils;
 import coder.dasu.meizi.view.base.SwipeRefreshFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,9 +24,12 @@ import retrofit2.Response;
 /**
  * Created by dasu on 2016/9/27.
  * https://github.com/woshidasusu/Meizi
- *
- * Viewpager + Fragment情况下，fragment的生命周期因Viewpager的缓存机制而失去了具体意义
+ * <p>
+ * 1、Viewpager + Fragment情况下，fragment的生命周期因Viewpager的缓存机制而失去了具体意义
  * 该抽象类自定义一个新的回调方法，当fragment可见状态改变时会触发的回调方法，介绍看下面
+ * <p>
+ * 2、因为干货都是技术博客或Github项目，一下基本数据实时性要求不高，因为基本不会发生变化，所以数据加载的策略采用：
+ * 优先从本地数据库中加载，如果本地数据库没有，再从服务器加载
  *
  * @see #onFragmentVisibleChange(boolean)
  */
@@ -32,21 +38,18 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
     private static final String TAG = GankDataFragment.class.getSimpleName();
 
     protected String mType;
-
-    public abstract String getType();
-
     protected int mLoadPage;
+    protected String mServerLatestIssue;
+    protected String mLocalLatestIssue;
     private boolean hasCreateView;
     private boolean isLoadingData;
     private boolean isFragmentVisible;
 
     protected List<Data> mDataList;
 
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.d(getTAG(), "setUserVisibleHint() -> isVisibleToUser: " + isVisibleToUser);
         if (rootView == null) {
             return;
         }
@@ -81,9 +84,31 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
         mDataList = new ArrayList<>();
         mLoadPage = 1;
         hasCreateView = false;
-        isLoadingData =false;
+        isLoadingData = false;
         isFragmentVisible = false;
+        mLocalLatestIssue = getLocalLatestIssue();
+        mServerLatestIssue = MeiziApp.getConfigSP().getString(AppConstant.GANK_SERVER_LATEST_ISSUE_TIME);
     }
+
+    /*********************************************************************
+     * 子类的公共方法，子类均可直接调用，有些公有方法已默认执行，子类如不需要则覆盖重写
+     *********************************************************************/
+
+    /**
+     * 判断是否需要从服务器获取数据
+     */
+    public boolean isNeedLoadServerData() {
+        if (TextUtils.isEmpty(mLocalLatestIssue)) {
+            return true;
+        }
+        long server = TimeUtils.string2Milliseconds(mServerLatestIssue, TimeUtils.DAY_SDF);
+        long local = TimeUtils.string2Milliseconds(mLocalLatestIssue, TimeUtils.DAY_SDF);
+        return server > local;
+    }
+
+    public abstract String getLocalLatestIssue();
+
+    public abstract String getType();
 
     /**
      * 加载服务器数据
@@ -94,28 +119,30 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
     protected void loadServiceData(final boolean clearCache) {
         isLoadingData = true;
         GankApi gankApi = GankRetrofit.getGankService();
-        Call<GankDataResponse<Data>> call = gankApi.getData(getType(), GankApi.DEFAULT_COUNT, mLoadPage);
-        call.enqueue(new Callback<GankDataResponse<Data>>() {
+        Call<GankDataResponse> call = gankApi.getData(getType(), GankApi.DEFAULT_COUNT, mLoadPage);
+        call.enqueue(new Callback<GankDataResponse>() {
             @Override
-            public void onResponse(Call<GankDataResponse<Data>> call, Response<GankDataResponse<Data>> response) {
+            public void onResponse(Call<GankDataResponse> call, Response<GankDataResponse> response) {
                 Log.d(TAG, "[" + getType() + "] loadServiceData() -> onResponse(): " + response.isSuccessful());
                 if (response.isSuccessful()) {
                     if (clearCache) {
                         mDataList.clear();
                     }
                     mDataList.addAll(response.body().results);
-                    isLoadingData = false;
-                    onLoadServiceDataSuccess();
+                    MeiziApp.getConfigSP().putString(AppConstant.GANK_ANDROID_LATEST_UPDATE_TIME, mServerLatestIssue);
+                    mDaoSession.startAsyncSession().insertOrReplaceInTx(Data.class, mDataList);
                     if (isFragmentVisible) {
                         setRefresh(false);
                     }
+                    isLoadingData = false;
+                    onLoadServiceDataSuccess();
                 }
             }
 
             @Override
-            public void onFailure(Call<GankDataResponse<Data>> call, Throwable t) {
+            public void onFailure(Call<GankDataResponse> call, Throwable t) {
                 Log.d(TAG, "[" + getType() + "] loadServiceData() -> onFailure(): " + t.getMessage());
-                if(isFragmentVisible) {
+                if (isFragmentVisible) {
                     setRefresh(false);
                 }
                 isLoadingData = false;
@@ -123,6 +150,21 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
             }
         });
     }
+
+    /**
+     * 加载本地数据库数据
+     *
+     * @param clearCache true 重新加载服务器数据
+     *                   false 加载下一页数据
+     */
+    protected void loadLoaclData(final boolean clearCache) {
+        isLoadingData = true;
+    }
+
+    public boolean isLoadingData() {
+        return isLoadingData;
+    }
+
 
     /**************************************************************
      *  自定义的回调方法，子类可根据需求重写
@@ -135,10 +177,8 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
      */
     @Override
     public void loadData() {
-//        mLoadPage = 1;
-//       loadServiceData(true);
-        isLoadingData = true;
-        Toast.makeText(getActivity(), "开始加载..." ,Toast.LENGTH_SHORT).show();
+        mLoadPage = 1;
+        loadServiceData(true);
     }
 
     /**
@@ -151,6 +191,7 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
      * 当从服务器加载数据失败后会回调该方法
      */
     protected void onLoadServiceDataSuccess() {
+
     }
 
     /**
@@ -162,9 +203,9 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
      *                  false 可见  -> 不可见
      */
     protected void onFragmentVisibleChange(boolean isVisible) {
-        Log.w(getTAG(), "onFragmentVisibleChange -> isVisible: " + isVisible);
+        Log.d(getTAG(), "onFragmentVisibleChange -> isVisible: " + isVisible);
         if (isVisible) {
-            if(isLoadingData) {
+            if (isLoadingData) {
                 setRefresh(true);
             } else {
 

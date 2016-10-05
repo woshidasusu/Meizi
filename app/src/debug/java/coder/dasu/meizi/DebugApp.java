@@ -3,8 +3,6 @@ package coder.dasu.meizi;
 import com.facebook.stetho.Stetho;
 import com.squareup.picasso.Picasso;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by dasu on 2016/9/30.
  * https://github.com/woshidasusu/Meizi
@@ -21,7 +19,7 @@ public class DebugApp extends MeiziApp{
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                         .build());
-        ButterKnife.setDebug(true);
+//        ButterKnife.setDebug(true);
         Picasso.with(getApplicationContext())
                 .setDebugging(true);
 

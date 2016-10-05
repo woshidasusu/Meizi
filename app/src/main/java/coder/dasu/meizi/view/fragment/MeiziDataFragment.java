@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.data.bean.Data;
+import coder.dasu.meizi.data.entity.Data;
 import coder.dasu.meizi.listener.OnItemClickListener;
 import coder.dasu.meizi.utils.ListUtils;
 import coder.dasu.meizi.view.adapter.MeiziWallAdapter;
@@ -53,7 +53,7 @@ public class MeiziDataFragment extends GankDataFragment {
     protected void onFragmentVisibleChange(boolean isVisible) {
         super.onFragmentVisibleChange(isVisible);
         if (isVisible) {
-            if (ListUtils.isEmpty(mDataList)) {
+            if (ListUtils.isEmpty(mDataList) && !isLoadingData()) {
                 setRefresh(true);
                 loadServiceData(false);
             }
@@ -106,6 +106,11 @@ public class MeiziDataFragment extends GankDataFragment {
     @Override
     public String getType() {
         return mType;
+    }
+
+    @Override
+    public String getLocalLatestIssue() {
+        return null;
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.data.bean.Data;
+import coder.dasu.meizi.data.entity.Data;
 import coder.dasu.meizi.listener.OnItemClickListener;
 import coder.dasu.meizi.view.widgets.RatioImageView;
 

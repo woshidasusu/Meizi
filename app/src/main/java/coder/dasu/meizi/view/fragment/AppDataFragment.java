@@ -1,13 +1,22 @@
 package coder.dasu.meizi.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import coder.dasu.meizi.R;
+import coder.dasu.meizi.data.entity.Data;
+import coder.dasu.meizi.listener.OnItemClickListener;
+import coder.dasu.meizi.utils.ListUtils;
+import coder.dasu.meizi.view.adapter.AndroidDataAdapter;
 
 /**
  * Created by dasu on 2016/9/26.
@@ -17,6 +26,12 @@ public class AppDataFragment extends GankDataFragment {
 
     private static final String TAG = AppDataFragment.class.getSimpleName();
 
+    private AndroidDataAdapter mDataAdapter;
+    private Context mContext;
+
+    @InjectView(R.id.rv_app)
+    RecyclerView mAndroidDataView;
+
     public AppDataFragment(String type) {
         mType = type;
     }
@@ -24,6 +39,11 @@ public class AppDataFragment extends GankDataFragment {
     @Override
     public String getType() {
         return mType;
+    }
+
+    @Override
+    public String getLocalLatestIssue() {
+        return null;
     }
 
     @Override
@@ -42,8 +62,45 @@ public class AppDataFragment extends GankDataFragment {
         return rootView;
     }
 
-    private void bindWidgets() {
+    @Override
+    protected void onFragmentVisibleChange(boolean isVisible) {
+        super.onFragmentVisibleChange(isVisible);
+        if (isVisible) {
+            if (ListUtils.isEmpty(mDataList) && !isLoadingData()) {
+                setRefresh(true);
+                loadServiceData(false);
+            }
+        }
+    }
 
+
+
+    private void bindWidgets() {
+        LinearLayoutManager manager = new LinearLayoutManager(mContext);
+        mAndroidDataView.setLayoutManager(manager);
+        mDataAdapter = new AndroidDataAdapter(getActivity(), mDataList);
+        mAndroidDataView.setAdapter(mDataAdapter);
+
+        mDataAdapter.setOnItemClickListener(getOnItemClick());
+    }
+
+    @Override
+    protected void onLoadServiceDataSuccess() {
+        mDataAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onLoadServiceDataFailure() {
+
+    }
+
+    public OnItemClickListener getOnItemClick() {
+        return new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, View picture, View text, Data data) {
+                Snackbar.make(view, data.getWho(), Snackbar.LENGTH_SHORT).show();
+            }
+        };
     }
 
 }

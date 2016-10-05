@@ -1,8 +1,8 @@
-package coder.dasu.meizi.data.bean;
+package coder.dasu.meizi.data.entity;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Created by dasu on 2016/9/27.
@@ -11,7 +11,7 @@ import org.greenrobot.greendao.annotation.Generated;
  * 发布过干货的日期
  */
 @Entity
-public class DayPublish {
+public class DayPublish implements Comparable<DayPublish>{
 
     @Id(autoincrement = true)
     private Long id;
@@ -43,6 +43,9 @@ public class DayPublish {
     public void setDay(String day) {
         this.day = day;
     }
-    
 
+    @Override
+    public int compareTo(DayPublish o) {
+        return o.getDay().compareTo(this.getDay());
+    }
 }
