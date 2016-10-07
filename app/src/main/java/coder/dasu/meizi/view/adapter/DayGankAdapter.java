@@ -2,7 +2,6 @@ package coder.dasu.meizi.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,20 +51,17 @@ public class DayGankAdapter extends RecyclerView.Adapter<DayGankAdapter.ViewHold
         return new ViewHolder(view);
     }
 
-    static int i = 0;
-
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final String day = mDayPublishList.get(position).getDay();
         final String[] dayArr = day.split("-");
         DataDao dataDao = MeiziApp.getDaoSession().getDataDao();
         Date time = TimeUtils.string2Date(day, TimeUtils.DAY_SDF);
-        Log.e("!!!!!!!!!!!","count : " + i++);
         Data meizi = dataDao.queryBuilder()
-                .where(DataDao.Properties.Type.eq("福利"))
+                .where(DataDao.Properties.PublishedAt.eq(time), DataDao.Properties.Type.eq("福利"))
                 .limit(1).list().get(0);
         Data video = dataDao.queryBuilder()
-                .where(DataDao.Properties.Type.eq("休息视频"))
+                .where(DataDao.Properties.PublishedAt.eq(time), DataDao.Properties.Type.eq("休息视频"))
                 .limit(1).list().get(0);
         Glide.with(mContext)
                 .load(meizi.getUrl())

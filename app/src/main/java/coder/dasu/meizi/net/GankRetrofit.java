@@ -18,7 +18,7 @@ public class GankRetrofit {
     final GankApi mGankApi;
 
     final Gson mGson = new GsonBuilder()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            .setDateFormat("yyyy-MM-dd")
             .serializeNulls()
             .create();
 
