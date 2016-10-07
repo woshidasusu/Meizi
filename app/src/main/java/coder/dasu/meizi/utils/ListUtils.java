@@ -22,4 +22,43 @@ public class ListUtils {
         return false;
     }
 
+    /**
+     * 全部为空
+     * @param list
+     * @param moreList
+     * @return
+     */
+    public static boolean isEmpty(List list, List... moreList) {
+        if (!isEmpty(list)) {
+            return false;
+        }
+        for (List l:moreList) {
+            if (!isEmpty(l)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isNotEmpty(List list) {
+        return !isEmpty(list);
+    }
+
+    /**
+     * 全部不为空
+     * @param list
+     * @param moreList
+     * @return
+     */
+    public static boolean isNotEmpty(List list, List... moreList) {
+        if (isEmpty(list)) {
+            return false;
+        }
+        for (List l : moreList) {
+            if (isEmpty(l)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

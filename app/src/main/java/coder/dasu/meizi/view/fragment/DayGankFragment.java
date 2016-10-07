@@ -17,9 +17,8 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.data.entity.Data;
+import coder.dasu.meizi.data.entity.DayGank;
 import coder.dasu.meizi.data.entity.DayPublish;
-import coder.dasu.meizi.listener.OnItemClickListener;
 import coder.dasu.meizi.utils.ListUtils;
 import coder.dasu.meizi.view.adapter.DayGankAdapter;
 
@@ -130,11 +129,11 @@ public class DayGankFragment extends GankDataFragment {
 
     }
 
-    public OnItemClickListener getOnItemClick() {
-        return new OnItemClickListener() {
+    public DayGankAdapter.OnItemClickListener getOnItemClick() {
+        return new DayGankAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, View picture, View text, Data data) {
-                Snackbar.make(view, data.getWho(), Snackbar.LENGTH_SHORT).show();
+            public void onItemClick(View view, View picture, View text, DayGank dayGank) {
+                Snackbar.make(view, dayGank.getDate(), Snackbar.LENGTH_SHORT).show();
             }
         };
     }

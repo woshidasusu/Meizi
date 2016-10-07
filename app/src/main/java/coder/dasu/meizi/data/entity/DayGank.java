@@ -8,7 +8,7 @@ import org.greenrobot.greendao.annotation.Id;
  *
  * 每日干货
  */
-public class DayGank {
+public class DayGank implements Comparable<DayGank>{
 
     @Id(autoincrement = true)
     private Long id;
@@ -39,5 +39,10 @@ public class DayGank {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public int compareTo(DayGank o) {
+        return o.getDate().compareTo(this.getDate());
     }
 }

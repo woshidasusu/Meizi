@@ -45,6 +45,7 @@ public class WelcomeActivity extends Activity {
     private String mTodayDate;
     private Call<GankHistoryResponse> call;
     private boolean isLoading;
+    private Timer mTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +75,8 @@ public class WelcomeActivity extends Activity {
                 : TimeUtils.string2Milliseconds(mLastUpdateDay, TimeUtils.DAY_SDF);
         if (today > lastUpdateDay) {
             loadGankDayData();
-            new Timer().schedule(getTimeLimitTask(), 2000);
+            mTimer = new Timer();
+            mTimer.schedule(getTimeLimitTask(), 2000);
         } else {
             startMainActivity();
         }
@@ -109,6 +111,7 @@ public class WelcomeActivity extends Activity {
                         mDaoSession.getDayPublishDao().insertInTx(dayList);
                     }
                     if (isLoading) {
+                        mTimer.cancel();
                         startMainActivity();
                     }
                     isLoading = false;
@@ -119,6 +122,7 @@ public class WelcomeActivity extends Activity {
             public void onFailure(Call<GankHistoryResponse> call, Throwable t) {
                 Log.d(TAG, "loadGankDayData()->onFailure(): " + t.getMessage());
                 if (isLoading) {
+                    mTimer.cancel();
                     startMainActivity();
                 }
                 isLoading = false;

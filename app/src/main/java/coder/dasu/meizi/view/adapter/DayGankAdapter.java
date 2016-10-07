@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -22,9 +22,14 @@ import coder.dasu.meizi.data.dao.DataDao;
 import coder.dasu.meizi.data.entity.Data;
 import coder.dasu.meizi.data.entity.DayGank;
 import coder.dasu.meizi.data.entity.DayPublish;
-import coder.dasu.meizi.listener.OnItemClickListener;
+import coder.dasu.meizi.net.GankRetrofit;
+import coder.dasu.meizi.net.response.GankDayResponse;
+import coder.dasu.meizi.utils.ListUtils;
 import coder.dasu.meizi.utils.TimeUtils;
 import coder.dasu.meizi.view.widgets.RatioImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * ddfasdfsf
@@ -43,6 +48,18 @@ public class DayGankAdapter extends RecyclerView.Adapter<DayGankAdapter.ViewHold
         mContext = context;
         mDayPublishList = data;
         mDayGankList = new ArrayList<>();
+        List<Data> meizi = MeiziApp.getDaoSession().getDataDao().queryBuilder().where(DataDao.Properties.Type.eq("福利")).list();
+        List<Data> video = MeiziApp.getDaoSession().getDataDao().queryBuilder().where(DataDao.Properties.Type.eq("休息视频")).list();
+        Collections.sort(meizi);
+        Collections.sort(video);
+        int length = meizi.size() < video.size() ? meizi.size() : video.size();
+        for (int i=0;i<length;i++) {
+            DayGank dayGank = new DayGank();
+            dayGank.setDescription(video.get(i).getDesc());
+            dayGank.setImgUrl(meizi.get(i).getUrl());
+            dayGank.setDate(TimeUtils.date2String(meizi.get(i).getPublishedAt(),TimeUtils.DAY_SDF));
+            mDayGankList.add(dayGank);
+        }
     }
 
     @Override
@@ -52,35 +69,68 @@ public class DayGankAdapter extends RecyclerView.Adapter<DayGankAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final String day = mDayPublishList.get(position).getDay();
         final String[] dayArr = day.split("-");
-        DataDao dataDao = MeiziApp.getDaoSession().getDataDao();
-        Date time = TimeUtils.string2Date(day, TimeUtils.DAY_SDF);
-        Data meizi = dataDao.queryBuilder()
-                .where(DataDao.Properties.PublishedAt.eq(time), DataDao.Properties.Type.eq("福利"))
-                .limit(1).list().get(0);
-        Data video = dataDao.queryBuilder()
-                .where(DataDao.Properties.PublishedAt.eq(time), DataDao.Properties.Type.eq("休息视频"))
-                .limit(1).list().get(0);
-        Glide.with(mContext)
-                .load(meizi.getUrl())
-                .centerCrop()
-                .into(holder.mDayGankImg)
-                .getSize(new SizeReadyCallback() {
-                    @Override
-                    public void onSizeReady(int width, int height) {
-                        if (!holder.mItemView.isShown()) {
-                            holder.mItemView.setVisibility(View.VISIBLE);
-                        }
+        if (hadDayGankData(day)) {
+            initItemView(holder, position);
+            return;
+        }
+        final int positi = position;
+        Call<GankDayResponse> call =  GankRetrofit.getGankService().getDayGankData(dayArr[0], dayArr[1], dayArr[2]);
+        call.enqueue(new Callback<GankDayResponse>() {
+            @Override
+            public void onResponse(Call<GankDayResponse> call, Response<GankDayResponse> response) {
+                if (response.isSuccessful()) {
+                    List<Data> android = response.body().results.android;
+                    List<Data> app = response.body().results.app;
+                    List<Data> expand= response.body().results.expand;
+                    List<Data> ios= response.body().results.ios;
+                    List<Data> meizi= response.body().results.meizi;
+                    List<Data> push = response.body().results.push;
+                    List<Data> video = response.body().results.video;
+                    save2Database(android);
+                    save2Database(app);
+                    save2Database(expand);
+                    save2Database(ios);
+                    save2Database(meizi);
+                    save2Database(push);
+                    save2Database(video);
+                    DayGank dayGank = new DayGank();
+                    if (ListUtils.isNotEmpty(meizi, video)){
+                        dayGank.setDate(TimeUtils.date2String(meizi.get(0).getPublishedAt(), TimeUtils.DAY_SDF));
+                        dayGank.setImgUrl(meizi.get(0).getUrl());
+                        dayGank.setDescription(video.get(0).getDesc());
+                        mDayGankList.add(dayGank);
+                        Collections.sort(mDayGankList);
+                        initItemView(holder, positi);
+                    } else {
+                        holder.mItemView.setVisibility(View.GONE);
                     }
-                });
-        holder.mDayGankTitle.setText(video.getDesc());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<GankDayResponse> call, Throwable t) {
+                holder.mItemView.setVisibility(View.GONE);
+            }
+        });
 
     }
 
+    public boolean hadDayGankData(String date) {
+        for (DayGank d: mDayGankList) {
+            if (d.getDate().equals(date)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void initItemView(final ViewHolder holder, int position) {
+        if (mDayGankList.size() <= position) {
+            return;
+        }
         DayGank data = mDayGankList.get(position);
         holder.mData = data;
 
@@ -99,13 +149,24 @@ public class DayGankAdapter extends RecyclerView.Adapter<DayGankAdapter.ViewHold
         holder.mDayGankTitle.setText(data.getDescription());
     }
 
+    public void save2Database(List<Data> dataList) {
+        if (ListUtils.isEmpty(dataList)) {
+            return;
+        }
+        MeiziApp.getDaoSession().getDataDao().insertOrReplaceInTx(dataList);
+    }
+
     @Override
     public int getItemCount() {
-        return mDayPublishList.size();
+        return mDayGankList.size() + 1;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(View view, View picture, View text, DayGank dayGank);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -129,7 +190,7 @@ public class DayGankAdapter extends RecyclerView.Adapter<DayGankAdapter.ViewHold
         @Override
         public void onClick(View v) {
             if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(v, mDayGankImg, mItemView, null);
+                mItemClickListener.onItemClick(v, mDayGankImg, mItemView, mData);
             }
         }
     }

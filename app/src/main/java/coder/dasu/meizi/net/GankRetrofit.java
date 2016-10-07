@@ -11,7 +11,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by sxq on 2016/9/13.
+ * Created by dasu on 2016/9/13.
+ * https://github.com/woshidasusu/Meizi
  */
 public class GankRetrofit {
 
