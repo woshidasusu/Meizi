@@ -10,7 +10,12 @@
     <dimen name="widget_margin_normal">10dp</dimen>
 
 
+    <!-- Text size -->
     <dimen name="text_size_big">24sp</dimen>
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
+
+    <!-- Toolbar -->
+    <dimen name="toolbar_title_big">48sp</dimen>
+    <dimen name="toolbar_height">200dp</dimen>
 </resources>

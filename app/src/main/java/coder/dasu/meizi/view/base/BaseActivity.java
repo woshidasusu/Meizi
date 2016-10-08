@@ -2,8 +2,10 @@ package coder.dasu.meizi.view.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.WindowManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -26,13 +28,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
+    @InjectView(R.id.collaps_toolbar)
+    CollapsingToolbarLayout mCollapsToolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(provideContentView());
         ButterKnife.inject(this);
-
+        //透明状态栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //透明导航栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        mCollapsToolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(mToolbar);
     }
 

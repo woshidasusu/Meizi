@@ -5,30 +5,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".view.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/toolbar_height"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collaps_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll"
-            >
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:expandedTitleTextAppearance="@style/ToolbarTitleTextAppearance"
+            app:expandedTitleGravity="center|bottom"
+            app:layout_scrollFlags="scroll|snap">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                android:title="Gank"
-                android:titleTextColor="@color/white"
                 app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -36,7 +35,9 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/main_tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?actionBarSize"
+            app:tabIndicatorColor="@color/blue"
+            app:tabSelectedTextColor="@color/blue"
             app:tabMode="scrollable"/>
 
     </android.support.design.widget.AppBarLayout>

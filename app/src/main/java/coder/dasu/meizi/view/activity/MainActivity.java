@@ -33,7 +33,7 @@ public class MainActivity extends SwipeRefreshActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        com.android.internal.R.dimen.action_bar_default_height_material
         ButterKnife.inject(this);
 
         initVariable();
