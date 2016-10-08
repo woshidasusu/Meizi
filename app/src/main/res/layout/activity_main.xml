@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:expandedTitleTextAppearance="@style/ToolbarTitleTextAppearance"
             app:expandedTitleGravity="center|bottom"
+            app:expandedTitleTextAppearance="@style/ToolbarTitleTextAppearance"
             app:layout_scrollFlags="scroll|snap">
 
             <android.support.v7.widget.Toolbar
@@ -32,13 +32,18 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/widget_margin_normal"
+            android:background="?attr/colorPrimary"/>
+
         <android.support.design.widget.TabLayout
             android:id="@+id/main_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             app:tabIndicatorColor="@color/blue"
-            app:tabSelectedTextColor="@color/blue"
-            app:tabMode="scrollable"/>
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/blue"/>
 
     </android.support.design.widget.AppBarLayout>
 
