@@ -3,6 +3,9 @@ android小白练手项目---妹子App
 
 ##目前进展
 
+**2016-10-10**
+列表页面暂时完成，缓存机制待改善，详情页待开发
+
 **2016-10-1**  
 自定义实现Fragment懒加载，支持Fragment可见时加载数据，离开时隐藏加载动画，返回时根据加载状态自动显示或隐藏加载动画  
 
@@ -20,9 +23,7 @@ android小白练手项目---妹子App
 引入Glidet图片框架
 
 效果：  
-![](./picture/meizi4.gif)
-![](./picture/meizi2.jpg)
-![](./picture/meizi3.jpg)
+![](./picture/meizi5.gif)
 
 
 
