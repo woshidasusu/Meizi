@@ -18,4 +18,7 @@
     <!-- Toolbar -->
     <dimen name="toolbar_title_big">48sp</dimen>
     <dimen name="toolbar_height">200dp</dimen>
+
+
+    <dimen name="item_video_view_height">224dp</dimen>
 </resources>
