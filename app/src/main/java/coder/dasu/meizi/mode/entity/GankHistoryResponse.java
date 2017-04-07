@@ -1,4 +1,4 @@
-package coder.dasu.meizi.mode.net.response;
+package coder.dasu.meizi.mode.entity;
 
 import java.util.List;
 

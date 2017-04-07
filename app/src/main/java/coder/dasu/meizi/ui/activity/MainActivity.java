@@ -10,12 +10,12 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.utils.ListUtils;
 import coder.dasu.meizi.ui.GankDataFragmentFactory;
 import coder.dasu.meizi.ui.GankDataFragmentFactory.FragmentKey;
 import coder.dasu.meizi.ui.adapter.GankPagerFragmentAdapter;
 import coder.dasu.meizi.ui.base.SwipeRefreshActivity;
 import coder.dasu.meizi.ui.fragment.GankDataFragment;
+import coder.dasu.meizi.utils.ListUtils;
 
 public class MainActivity extends SwipeRefreshActivity {
 
@@ -33,7 +33,6 @@ public class MainActivity extends SwipeRefreshActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        com.android.internal.R.dimen.status_bar_height
         ButterKnife.inject(this);
 
         initVariable();

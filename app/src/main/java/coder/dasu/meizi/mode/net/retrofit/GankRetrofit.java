@@ -1,4 +1,4 @@
-package coder.dasu.meizi.mode.net;
+package coder.dasu.meizi.mode.net.retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

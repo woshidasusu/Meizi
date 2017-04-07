@@ -10,9 +10,7 @@ import android.view.WindowManager;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import coder.dasu.meizi.MeiziApplication;
 import coder.dasu.meizi.R;
-import coder.dasu.meizi.mode.dao.DaoSession;
 
 /**
  * Created by dasu on 2016/8/25.
@@ -21,8 +19,6 @@ import coder.dasu.meizi.mode.dao.DaoSession;
  * 1、提供唯一的 DaoSession数据库访问接口
  */
 public abstract class BaseActivity extends AppCompatActivity {
-
-    protected static DaoSession mDaoSession = MeiziApplication.getDaoSession();
 
     private long mFirstClickTime;
 

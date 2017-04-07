@@ -1,10 +1,8 @@
-package coder.dasu.meizi.mode.net.response;
+package coder.dasu.meizi.mode.entity;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-
-import coder.dasu.meizi.mode.entity.Data;
 
 /**
  * Created by dasu on 2016/9/27.

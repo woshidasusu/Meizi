@@ -1,8 +1,8 @@
-package coder.dasu.meizi.mode.net;
+package coder.dasu.meizi.mode.net.retrofit;
 
-import coder.dasu.meizi.mode.net.response.GankDataResponse;
-import coder.dasu.meizi.mode.net.response.GankDayResponse;
-import coder.dasu.meizi.mode.net.response.GankHistoryResponse;
+import coder.dasu.meizi.mode.entity.GankDataResponse;
+import coder.dasu.meizi.mode.entity.GankDayResponse;
+import coder.dasu.meizi.mode.entity.GankHistoryResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

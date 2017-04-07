@@ -1,4 +1,4 @@
-package coder.dasu.meizi.mode.net;
+package coder.dasu.meizi.mode.net.retrofit;
 
 /**
  * Created by sxq on 2016/9/12.

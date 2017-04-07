@@ -58,18 +58,6 @@ public class NetworkUtils {
     }
 
     /**
-     * 判断网络是否可用
-     * <p>需添加权限 {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>}</p>
-     *
-     * @param context 上下文
-     * @return {@code true}: 可用<br>{@code false}: 不可用
-     */
-    public static boolean isAvailable(Context context) {
-        NetworkInfo info = getActiveNetworkInfo(context);
-        return info != null && info.isAvailable();
-    }
-
-    /**
      * 判断网络是否连接
      * <p>需添加权限 {@code <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>}</p>
      *
@@ -78,7 +66,7 @@ public class NetworkUtils {
      */
     public static boolean isConnected(Context context) {
         NetworkInfo info = getActiveNetworkInfo(context);
-        return info != null && info.isConnected();
+        return info != null && info.isConnected() && info.isAvailable();
     }
 
     /**
