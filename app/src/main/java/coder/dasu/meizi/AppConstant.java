@@ -20,4 +20,4 @@ public class AppConstant {
     public static final String GANK_IOS_LATEST_UPDATE_TIME = "gank_ios_last_update_time";
 
 
-}
+    }
