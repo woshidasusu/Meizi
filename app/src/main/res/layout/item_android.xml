@@ -11,7 +11,7 @@
               android:visibility="invisible"
               tools:visibility="visible">
 
-    <coder.dasu.meizi.ui.view.RatioImageView
+    <com.dasu.gank.ui.view.RatioImageView
         android:id="@+id/android_item_image"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

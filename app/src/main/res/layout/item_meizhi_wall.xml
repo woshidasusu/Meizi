@@ -8,7 +8,7 @@
               android:orientation="vertical"
               android:visibility="invisible">
 
-    <coder.dasu.meizi.ui.view.RatioImageView
+    <com.dasu.gank.ui.view.RatioImageView
         android:id="@+id/meizhi_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -6,7 +6,7 @@ android {
     buildToolsVersion '25.0.2'
 
     defaultConfig {
-        applicationId "coder.dasu.meizi"
+        applicationId "com.dasu.gank"
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
@@ -21,7 +21,7 @@ android {
 
     greendao{
         schemaVersion 4
-        daoPackage 'coder.dasu.meizi.mode.dao'
+        daoPackage 'com.dasu.gank.mode.dao'
         targetGenDir'src/main/java'
     }
 }

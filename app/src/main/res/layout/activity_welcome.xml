@@ -4,7 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <coder.dasu.meizi.ui.view.RatioImageView
+    <com.dasu.gank.ui.view.RatioImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
