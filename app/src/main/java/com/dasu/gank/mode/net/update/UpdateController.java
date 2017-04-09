@@ -1,137 +1,58 @@
-//package coder.dasu.meizi.mode.net.update;
-//
-//import android.app.Dialog;
-//import android.content.Context;
-//import android.text.TextUtils;
-//
-//import com.chinanetcenter.cloudgame.Config;
-//import com.chinanetcenter.cloudgame.model.log.LogUtils;
-//import com.chinanetcenter.cloudgame.model.utils.AppUtils;
-//import com.chinanetcenter.cloudgame.model.utils.FileUtils;
-//import com.chinanetcenter.cloudgame.model.utils.ImageFileDownloadUtils;
-//import com.chinanetcenter.cloudgame.model.vms.VersionInfoResEntity;
-//import com.chinanetcenter.cloudgame.model.vms.VmsController;
-//import com.chinanetcenter.cloudgame.model.volley.VolleyListener;
-//
-//import java.io.File;
-//
-///**
-// * Created by zhengyx on 2016/12/7.
-// */
-//
-//public class UpdateController {
-//    private static final String TAG = "UpdateController";
-//    /**
-//     * 启动页
-//     **/
-//    public static final String HOME_PAGE_IMAGE = "home_page_image";
-//    public static final String HOME_PAGE_TEMP = "home_page_temp";
-//
-//    /**
-//     * homeActivity背景图
-//     **/
-//    public static final String HOME_BACKGROUND_IMAGE = "home_background_image";
-//    public static final String HOME_BACKGROUND_TEMP = "home_background_temp";
-//
-//    /**
-//     * 标示是否处于全屏播放
-//     */
-//    private static boolean mIsOnFullScreen;
-//
-//    public static boolean getIsOnFullScreen() {
-//        return mIsOnFullScreen;
-//    }
-//
-//    public static void setIsOnFullScreen(boolean isOnFullScreen) {
-//        mIsOnFullScreen = isOnFullScreen;
-//    }
-//
-//    /**
-//     * 个人中心检测更新调用时要通过监听回调展示相应的toast
-//     *
-//     * @param context
-//     * @param onCheckUpdateListener
-//     */
-//    public static void checkUpdate(final Context context, final OnCheckUpdateListener
-//            onCheckUpdateListener) {
-//        checkApkFile(context);
-//        VmsController.checkVersion(context, context, new VolleyListener<VersionInfoResEntity>() {
-//            @Override
-//            public void onSuccess(VersionInfoResEntity data) {
-//                if (data != null && data.getResult().equals("1")) {
-//                    doUpdate(context, data, onCheckUpdateListener.getUpdateDialog(data), onCheckUpdateListener);
-//                } else {
-//                    onCheckUpdateListener.noUpdateVersion();
-//                }
-//            }
-//
-//            @Override
-//            public void onError(int code, Exception description) {
-//                LogUtils.e(TAG, "onError=" + code + " des=" + description);
-//                onCheckUpdateListener.requestError(code, description);
-//            }
-//        });
-//    }
-//
-//    private static void doUpdate(Context context, final VersionInfoResEntity data, Dialog
-//            updateDialog, OnCheckUpdateListener onCheckUpdateListener) {
-//        if (data.getUpdateType().equals("1")) {
-//            updateDialog.show();
-//        } else if (data.getUpdateType().equals("0")) {
-//            if (UpdateHelper.isApkExist(context, data.getVersionCode())) {
-//                updateDialog.show();
-//            } else {
-//                onCheckUpdateListener.downloadingUpdateVersion();
-//                UpdateHelper.downloadApkFile(context, data, updateDialog);
-//            }
-//        }
-//    }
-//
-//    //启动页和首页背景下载相关
-//
-//    public static void downloadImage(Context context, String url, String imageName) {
-//        if (TextUtils.isEmpty(url)) {
-//            return;
-//        }
-//        String tempName = null;
-//        if (imageName.equals(HOME_PAGE_IMAGE)) {
-//            tempName = HOME_PAGE_TEMP;
-//        } else if (imageName.equals(HOME_BACKGROUND_IMAGE)) {
-//            tempName = HOME_BACKGROUND_TEMP;
-//        }
-//        ImageFileDownloadUtils.download(context, url, imageName, tempName);
-//    }
-//
-//    /**
-//     * 判断图片是否下载完成，没有的话直接去下载
-//     *
-//     * @param url
-//     * @param imageName
-//     */
-//    public static void checkImage(Context context, String url, String imageName) {
-//        if (FileUtils.isFileExists(context, imageName)) {
-//            downloadImage(context, url, imageName);
-//        }
-//    }
-//
-//    /**
-//     * 检查是否有已经安装过的APK升级包，有的话就删除
-//     */
-//    private static void checkApkFile(final Context context) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (UpdateSp.getUpdateVersion(context).equals(AppUtils.getVersionCode(context))) {
-//                    int currentVersionCode = Integer.valueOf(AppUtils.getVersionCode(context));
-//                    while (currentVersionCode != 1) {
-//                        File file = new File(Config.getAppDir(context), "" + currentVersionCode);
-//                        if (file.exists()) {
-//                            file.delete();
-//                        }
-//                        currentVersionCode--;
-//                    }
-//                }
-//            }
-//        }).start();
-//    }
-//}
+package com.dasu.gank.mode.net.update;
+
+import android.content.Context;
+
+import com.dasu.gank.mode.entity.VersionResEntity;
+import com.dasu.gank.mode.net.retrofit.VMSController;
+import com.dasu.gank.utils.AppUtils;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * Created by dasu on 2017/4/8.
+ *
+ * 控制Update流程，外部与Update模块交互只需知道该类即可
+ * Update流程:
+ *      1. 向服务器（fir.im)发起查询版本信息请求
+ *      2.1 如果是最新版本，则通知无需更新
+ *      2.2 如果需要更新，那么客户端判断更新类型是强制还是可选择更新（这项工作应该由服务端完成，由于使用的是第三方服务器托管apk，所以只能由客户端完成）
+ *      2.2.1 强制更新
+ *      2.2.2 可选择更新
+ */
+public class UpdateController {
+    private static final String TAG = UpdateController.class.getSimpleName();
+
+    public static void checkUpdate(final Context context, final OnCheckUpdateListener listener) {
+        VMSController.queryVersion(new Callback<VersionResEntity>() {
+            @Override
+            public void onResponse(Call<VersionResEntity> call, Response<VersionResEntity> response) {
+                VersionResEntity version = response.body() != null ? response.body() : null;
+                if (version != null) {
+                    String newVersionCode = version.getVersion();
+                    if (!newVersionCode.equals(AppUtils.getAppVersionCode(context))) {
+                        //需要更新，小版本更新时可选择，大版本更新时强制更新
+                        //versionShort : 1.2  ===>  newVer : 1
+                        int newVer = Integer.parseInt(version.getVersionShort().substring(0,1));
+                        //versionName : 1.0  ===> curVer : 1
+                        int curVer = Integer.parseInt(AppUtils.getAppVersionName(context).substring(0,1));
+                        if (newVer > curVer) {
+                            //强制更新
+                            listener.onPreUpdate(true, version);
+                        } else {
+                            //选择更新
+                            listener.onPreUpdate(false, version);
+                        }
+                        UpdateHelper.downloadApk(context, version, listener);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VersionResEntity> call, Throwable t) {
+
+            }
+        });
+    }
+}

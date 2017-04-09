@@ -9,14 +9,10 @@ import retrofit2.http.Path;
 
 /**
  * Created by dasu on 2016/8/25.
+ *
+ * gank.io 的 api
  */
-public interface GankApi {
-
-    /**
-     * 默认一次加载的数量
-     */
-    int DEFAULT_COUNT = 10;
-
+interface ApiGank {
     /**
      * 获取发布过干货的日期
      */

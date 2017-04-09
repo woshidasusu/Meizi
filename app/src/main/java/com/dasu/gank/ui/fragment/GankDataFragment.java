@@ -6,17 +6,17 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.dasu.gank.AppConstant;
 import com.dasu.gank.GankApplication;
 import com.dasu.gank.mode.entity.Data;
-import com.dasu.gank.mode.net.retrofit.GankApi;
-import com.dasu.gank.mode.net.retrofit.GankRetrofit;
 import com.dasu.gank.mode.entity.GankDataResponse;
-import com.dasu.gank.utils.TimeUtils;
+import com.dasu.gank.mode.net.retrofit.GankController;
 import com.dasu.gank.ui.base.SwipeRefreshFragment;
+import com.dasu.gank.utils.TimeUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -118,9 +118,7 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
      */
     protected void loadServiceData(final boolean clearCache) {
         isLoadingData = true;
-        GankApi gankApi = GankRetrofit.getGankService();
-        Call<GankDataResponse> call = gankApi.getData(getType(), GankApi.DEFAULT_COUNT, mLoadPage);
-        call.enqueue(new Callback<GankDataResponse>() {
+        GankController.getData(getType(), 10, mLoadPage, new Callback<GankDataResponse>() {
             @Override
             public void onResponse(Call<GankDataResponse> call, Response<GankDataResponse> response) {
                 Log.d(TAG, "[" + getType() + "] loadServiceData() -> onResponse(): " + response.isSuccessful());

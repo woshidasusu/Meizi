@@ -9,6 +9,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.dasu.gank.GankApplication;
+import com.dasu.gank.R;
+import com.dasu.gank.mode.dao.DataDao;
+import com.dasu.gank.mode.entity.Data;
+import com.dasu.gank.mode.entity.DayGank;
+import com.dasu.gank.mode.entity.DayPublish;
+import com.dasu.gank.mode.entity.GankDayResponse;
+import com.dasu.gank.mode.net.retrofit.GankController;
+import com.dasu.gank.ui.view.RatioImageView;
+import com.dasu.gank.utils.ListUtils;
+import com.dasu.gank.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,17 +27,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.dasu.gank.GankApplication;
-import com.dasu.gank.R;
-import com.dasu.gank.mode.dao.DataDao;
-import com.dasu.gank.mode.entity.Data;
-import com.dasu.gank.mode.entity.DayGank;
-import com.dasu.gank.mode.entity.DayPublish;
-import com.dasu.gank.mode.net.retrofit.GankRetrofit;
-import com.dasu.gank.mode.entity.GankDayResponse;
-import com.dasu.gank.utils.ListUtils;
-import com.dasu.gank.utils.TimeUtils;
-import com.dasu.gank.ui.view.RatioImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,6 +70,9 @@ public class DayGankAdapter extends RecyclerView.Adapter<DayGankAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        if (ListUtils.isEmpty(mDayPublishList)) {
+            return;
+        }
         final String day = mDayPublishList.get(position).getDay();
         final String[] dayArr = day.split("-");
         if (hadDayGankData(day)) {
@@ -77,8 +80,7 @@ public class DayGankAdapter extends RecyclerView.Adapter<DayGankAdapter.ViewHold
             return;
         }
         final int positi = position;
-        Call<GankDayResponse> call =  GankRetrofit.getGankService().getDayGankData(dayArr[0], dayArr[1], dayArr[2]);
-        call.enqueue(new Callback<GankDayResponse>() {
+        GankController.getDayGankData(dayArr[0], dayArr[1], dayArr[2], new Callback<GankDayResponse>() {
             @Override
             public void onResponse(Call<GankDayResponse> call, Response<GankDayResponse> response) {
                 if (response.isSuccessful()) {

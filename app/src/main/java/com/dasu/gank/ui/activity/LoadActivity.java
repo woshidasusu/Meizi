@@ -6,6 +6,17 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.dasu.gank.AppConstant;
+import com.dasu.gank.GankApplication;
+import com.dasu.gank.R;
+import com.dasu.gank.mode.dao.DaoSession;
+import com.dasu.gank.mode.entity.DayPublish;
+import com.dasu.gank.mode.entity.GankHistoryResponse;
+import com.dasu.gank.mode.net.retrofit.GankController;
+import com.dasu.gank.utils.ListUtils;
+import com.dasu.gank.utils.ScreenUtils;
+import com.dasu.gank.utils.TimeUtils;
+
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
@@ -14,17 +25,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.dasu.gank.AppConstant;
-import com.dasu.gank.GankApplication;
-import com.dasu.gank.R;
-import com.dasu.gank.mode.dao.DaoSession;
-import com.dasu.gank.mode.entity.DayPublish;
-import com.dasu.gank.mode.net.retrofit.GankApi;
-import com.dasu.gank.mode.net.retrofit.GankRetrofit;
-import com.dasu.gank.mode.entity.GankHistoryResponse;
-import com.dasu.gank.utils.ListUtils;
-import com.dasu.gank.utils.ScreenUtils;
-import com.dasu.gank.utils.TimeUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -84,9 +84,7 @@ public class LoadActivity extends Activity {
 
     private void loadGankDayData() {
         isLoading = true;
-        GankApi gankApi = GankRetrofit.getGankService();
-        call = gankApi.getGankDay();
-        call.enqueue(getLoadGankDayCallback());
+        GankController.getGankDay(getLoadGankDayCallback());
     }
 
     public Callback<GankHistoryResponse> getLoadGankDayCallback() {

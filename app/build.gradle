@@ -1,8 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
+def keyStore = file('gank.jks')
+println '=======================  ' + keyStore.exists()
+Properties properties = new Properties();
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
-    compileSdkVersion 25
+    compileSdkVersion 24
     buildToolsVersion '25.0.2'
 
     defaultConfig {
@@ -12,10 +17,62 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        fir {
+            def STOREPASS = properties.getProperty('STOREPASS')
+            def KEYALIAS = properties.getProperty('KEYALIAS')
+            def KEYPASS = properties.getProperty('KEYPASS')
+            println "==================================="
+            println "${STOREPASS}    ${KEYALIAS}       ${KEYPASS}"
+
+            storeFile file('gank.jks')
+            storePassword STOREPASS
+            keyAlias KEYALIAS
+            keyPassword KEYPASS
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "GAND_SERVICE", '"http://gank.io/api/"'
+            buildConfigField "String", "GITHUB_SERVICE", '"https://api.github.com/"'
+            //使用 fir.im 做版本管理服务器
+            buildConfigField "String", "VMS", '"http://api.fir.im/"'
+            buildConfigField 'String', 'APPID', /"${properties.getProperty('APPID', '')}"/
+            buildConfigField 'String', 'APITOKEN', /"${properties.getProperty('APITOKEN', '')}"/
+            //签名
+            if (keyStore.exists()) {
+                println 'gank.jks signing...'
+                signingConfig signingConfigs.fir
+            } else {
+                println 'no gank.jks'
+            }
+
+            //对apk进行重命名
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName = "gank_v${defaultConfig.versionName}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+        debug {
+            buildConfigField "String", "GAND_SERVICE", '"http://gank.io/api/"'
+            buildConfigField "String", "GITHUB_SERVICE", '"https://api.github.com/"'
+            //使用 fir.im 做版本管理服务器
+            buildConfigField "String", "VMS", '"http://api.fir.im/"'
+            buildConfigField 'String', 'APPID', /"${properties.getProperty('APPID', '')}"/
+            buildConfigField 'String', 'APITOKEN', /"${properties.getProperty('APITOKEN', '')}"/
         }
     }
 

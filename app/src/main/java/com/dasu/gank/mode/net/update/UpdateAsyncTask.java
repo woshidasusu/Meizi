@@ -3,6 +3,9 @@ package com.dasu.gank.mode.net.update;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.dasu.gank.mode.entity.VersionResEntity;
+import com.dasu.gank.utils.FileUtils;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +23,6 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import com.dasu.gank.mode.entity.VersionResEntity;
-import com.dasu.gank.utils.FileUtils;
-
 /**
  * Created by suxq on 2017/4/7.
  */
@@ -30,13 +30,15 @@ import com.dasu.gank.utils.FileUtils;
 class UpdateAsyncTask extends AsyncTask<String, Integer, Boolean> {
 
     private static final String TAG = "UpdateAsyncTask";
-    private onCheckUpdateListener mUpdateListener;
+    private OnCheckUpdateListener mUpdateListener;
     private Context mContext;
     private VersionResEntity mVersionInfo;
+    private String mApkPath;
 
-    public UpdateAsyncTask(Context context, VersionResEntity versionInfo, onCheckUpdateListener listener) {
+    public UpdateAsyncTask(Context context, VersionResEntity versionInfo, OnCheckUpdateListener listener) {
         mContext = context;
         mUpdateListener = listener;
+        mVersionInfo = versionInfo;
     }
 
     @Override
@@ -62,9 +64,8 @@ class UpdateAsyncTask extends AsyncTask<String, Integer, Boolean> {
             conn.setConnectTimeout(12000);
             conn.setReadTimeout(12000);
             conn.setRequestProperty("Connection", "Keep-Alive");
-            //设置下载保存的位置和临时文件
+            //设置下载保存的临时文件
             File tempFile = new File(FileUtils.getAppDownloadDirectory(), "apk_temp");
-
             //开始下载文件
             byte[] buffer = new byte[1024];
             bis = new BufferedInputStream(conn.getInputStream());
@@ -81,6 +82,8 @@ class UpdateAsyncTask extends AsyncTask<String, Integer, Boolean> {
                 int progress = (int) ((1.0f * downloadLength / fileSize) * 100);
                 publishProgress(progress);
             }
+            mApkPath = FileUtils.getAppDownloadDirectory() + File.separator + mVersionInfo.getName();
+            FileUtils.copyFile(tempFile, new File(mApkPath));
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,9 +114,11 @@ class UpdateAsyncTask extends AsyncTask<String, Integer, Boolean> {
     @Override
     protected void onPostExecute(Boolean isSucceed) {
         if (mUpdateListener != null) {
-            mUpdateListener.onDownloadFinish(isSucceed);
+            mUpdateListener.onDownloadFinish(isSucceed, mApkPath);
         }
     }
+
+
 
     private class MyHostnameVerifier implements HostnameVerifier {
 

@@ -6,6 +6,8 @@ import android.content.IntentFilter;
 import com.dasu.gank.mode.dao.DaoMaster;
 import com.dasu.gank.mode.dao.DaoSession;
 import com.dasu.gank.mode.net.receiver.NetBroadcastReceiver;
+import com.dasu.gank.mode.net.update.UpdateController;
+import com.dasu.gank.ui.view.UpdateDialog;
 import com.dasu.gank.utils.SPUtils;
 
 import org.greenrobot.greendao.database.Database;
@@ -31,6 +33,7 @@ public class GankApplication extends Application {
         initGreenDao();
         mConfigSP = new SPUtils(getApplicationContext(), "config");
         registerNetStateListener();
+        UpdateController.checkUpdate(getApplicationContext(), new UpdateDialog(getApplicationContext()));
     }
 
 
