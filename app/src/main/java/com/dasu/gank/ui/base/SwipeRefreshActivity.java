@@ -4,15 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 
+import com.dasu.gank.R;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import com.dasu.gank.R;
 
 /**
  * Created by dasu on 2016/10/1.
  * https://github.com/woshidasusu/Meizi
  */
-public abstract class SwipeRefreshActivity extends BaseActivity implements ISwipeRefreshListener{
+public abstract class SwipeRefreshActivity extends NetworkListenerActivity implements ISwipeRefreshListener{
 
     private static final String TAG = SwipeRefreshActivity.class.getSimpleName();
 

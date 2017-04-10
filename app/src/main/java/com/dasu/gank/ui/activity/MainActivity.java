@@ -3,6 +3,7 @@ package com.dasu.gank.ui.activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.ViewGroup;
 
 import com.dasu.gank.R;
 import com.dasu.gank.mode.net.update.UpdateController;
@@ -31,7 +32,8 @@ public class MainActivity extends SwipeRefreshActivity {
     TabLayout mTabLayout;
     @InjectView(R.id.main_content_viewpager)
     ViewPager mViewPager;
-
+    @InjectView(R.id.layout_content)
+    ViewGroup mContentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class MainActivity extends SwipeRefreshActivity {
         initVariable();
         bindWidgets();
         UpdateController.checkUpdate(this, new UpdateDialog(this));
+        addNoNetworkTipView(mContentLayout);
     }
 
     @Override

@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import com.dasu.gank.utils.NetworkUtils;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by dasu on 2017/4/7.

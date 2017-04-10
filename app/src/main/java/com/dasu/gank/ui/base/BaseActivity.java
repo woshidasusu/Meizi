@@ -8,8 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 
 import com.dasu.gank.R;
-import com.dasu.gank.mode.net.update.UpdateController;
-import com.dasu.gank.ui.view.UpdateDialog;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -18,8 +16,6 @@ import butterknife.OnClick;
 /**
  * Created by dasu on 2016/8/25.
  * https://github.com/woshidasusu/Meizi
- *
- * 1、提供唯一的 DaoSession数据库访问接口
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -39,6 +35,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         mCollapsToolbar.setTitle(getString(R.string.app_name));
         setSupportActionBar(mToolbar);
+        ActivityStack.getInstance().pushActivity(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityStack.getInstance().popActivity(this);
     }
 
     @OnClick(R.id.toolbar)
@@ -50,7 +53,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         mFirstClickTime = secClick;
     }
 
-    protected void onToolbarDoubleClick(){}
+    protected void onToolbarDoubleClick() {
+    }
 
     public abstract int provideContentView();
 
