@@ -33,7 +33,6 @@ public class GankApplication extends Application {
         initGreenDao();
         mConfigSP = new SPUtils(getApplicationContext(), "config");
         registerNetStateListener();
-        UpdateController.checkUpdate(getApplicationContext(), new UpdateDialog(getApplicationContext()));
     }
 
 

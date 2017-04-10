@@ -1,6 +1,7 @@
 package com.dasu.gank.mode.net.update;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.dasu.gank.mode.entity.VersionResEntity;
 import com.dasu.gank.mode.net.retrofit.VMSController;
@@ -30,6 +31,7 @@ public class UpdateController {
             public void onResponse(Call<VersionResEntity> call, Response<VersionResEntity> response) {
                 VersionResEntity version = response.body() != null ? response.body() : null;
                 if (version != null) {
+                    Log.d(TAG, "onResponse: " + version.toString());
                     String newVersionCode = version.getVersion();
                     if (!newVersionCode.equals(AppUtils.getAppVersionCode(context))) {
                         //需要更新，小版本更新时可选择，大版本更新时强制更新
@@ -44,15 +46,18 @@ public class UpdateController {
                             //选择更新
                             listener.onPreUpdate(false, version);
                         }
-                        UpdateHelper.downloadApk(context, version, listener);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<VersionResEntity> call, Throwable t) {
-
+                Log.e(TAG, "onFailure: " + t.getMessage());
             }
         });
+    }
+
+    public static void downloadApk(Context context, VersionResEntity version, OnCheckUpdateListener listener) {
+        UpdateHelper.downloadApk(context, version, listener);
     }
 }

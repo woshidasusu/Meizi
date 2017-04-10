@@ -118,6 +118,9 @@ public class FileUtils {
                 while ((byteRead = is.read(buffer)) != -1) {
                     os.write(buffer, 0, byteRead);
                 }
+                if (isDeleteSource) {
+                    sourceFile.delete();
+                }
                 is.close();
                 os.close();
             }

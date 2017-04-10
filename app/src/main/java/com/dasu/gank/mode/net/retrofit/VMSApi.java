@@ -12,7 +12,7 @@ import retrofit2.http.Query;
  *
  * fir.im 的 api，VMS指版本管理服务器
  */
-interface ApiVMS {
+interface VMSApi {
 
     @GET("apps/latest/{id}")
     Call<VersionResEntity> queryVersion(@Path("id") String id, @Query("api_token") String apiToken);

@@ -12,7 +12,7 @@ import retrofit2.http.Path;
  *
  * gank.io 的 api
  */
-interface ApiGank {
+interface GankApi {
     /**
      * 获取发布过干货的日期
      */

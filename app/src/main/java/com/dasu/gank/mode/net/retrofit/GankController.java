@@ -14,7 +14,7 @@ import retrofit2.Callback;
 public class GankController {
     private static final String TAG = GankController.class.getSimpleName();
 
-    private static ApiGank getGankApi() {
+    private static GankApi getGankApi() {
         return GankApiSingleton.mInstance;
     }
 
@@ -31,7 +31,7 @@ public class GankController {
     }
 
     private static class GankApiSingleton{
-        private static ApiGank mInstance = RetrofitHelper.newRetrofit(BuildConfig.GAND_SERVICE).create(ApiGank.class);
+        private static GankApi mInstance = RetrofitHelper.newRetrofit(BuildConfig.GAND_SERVICE).create(GankApi.class);
     }
 
 }

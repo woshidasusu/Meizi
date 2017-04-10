@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.dasu.gank.mode.entity.VersionResEntity;
 import com.dasu.gank.mode.net.update.OnCheckUpdateListener;
+import com.dasu.gank.mode.net.update.UpdateController;
 
 import java.io.File;
 
@@ -74,16 +75,22 @@ public class UpdateDialog extends AlertDialog implements OnCheckUpdateListener {
         mProgressDialog.setProgress(0);
         mProgressDialog.setCancelable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.show();
+        UpdateController.downloadApk(mContext, mVersionInfo, this);
     }
 
     @Override
     public void onDownloading(int progress) {
-        mProgressDialog.setProgress(progress);
+        if (mProgressDialog != null) {
+            mProgressDialog.setProgress(progress);
+        }
     }
 
     @Override
     public void onDownloadFinish(boolean isSucceed, String apkPath) {
-        mProgressDialog.dismiss();
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+        }
         if (isSucceed) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

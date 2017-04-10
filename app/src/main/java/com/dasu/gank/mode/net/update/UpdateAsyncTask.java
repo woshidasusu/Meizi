@@ -2,6 +2,7 @@ package com.dasu.gank.mode.net.update;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.dasu.gank.mode.entity.VersionResEntity;
 import com.dasu.gank.utils.FileUtils;
@@ -82,7 +83,7 @@ class UpdateAsyncTask extends AsyncTask<String, Integer, Boolean> {
                 int progress = (int) ((1.0f * downloadLength / fileSize) * 100);
                 publishProgress(progress);
             }
-            mApkPath = FileUtils.getAppDownloadDirectory() + File.separator + mVersionInfo.getName();
+            mApkPath = FileUtils.getAppDownloadDirectory() + File.separator + mVersionInfo.getVersion() + ".apk";
             FileUtils.copyFile(tempFile, new File(mApkPath));
             return true;
         } catch (Exception e) {
@@ -108,6 +109,7 @@ class UpdateAsyncTask extends AsyncTask<String, Integer, Boolean> {
         if (mUpdateListener != null) {
             //values[0]:当前下载的进度，取值 0~100
             mUpdateListener.onDownloading(values[0]);
+            Log.d(TAG, "onProgressUpdate: " + values[0]);
         }
     }
 
@@ -115,6 +117,7 @@ class UpdateAsyncTask extends AsyncTask<String, Integer, Boolean> {
     protected void onPostExecute(Boolean isSucceed) {
         if (mUpdateListener != null) {
             mUpdateListener.onDownloadFinish(isSucceed, mApkPath);
+            Log.d(TAG, "onPostExecute: " + isSucceed + "    " + mApkPath);
         }
     }
 

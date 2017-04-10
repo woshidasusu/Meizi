@@ -14,7 +14,7 @@ import retrofit2.Callback;
 public class VMSController {
     private static final String TAG = VMSController.class.getSimpleName();
 
-    private static ApiVMS getVMSApi() {
+    private static VMSApi getVMSApi() {
         return VMSApiSingleton.sInstance;
     }
 
@@ -31,7 +31,7 @@ public class VMSController {
     }
 
     private static class VMSApiSingleton {
-        private static ApiVMS sInstance = RetrofitHelper.newRetrofit(BuildConfig.VMS).create(ApiVMS.class);
+        private static VMSApi sInstance = RetrofitHelper.newRetrofit(BuildConfig.VMS).create(VMSApi.class);
     }
 
 }

@@ -7,10 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 
+import com.dasu.gank.R;
+import com.dasu.gank.mode.net.update.UpdateController;
+import com.dasu.gank.ui.view.UpdateDialog;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.dasu.gank.R;
 
 /**
  * Created by dasu on 2016/8/25.
