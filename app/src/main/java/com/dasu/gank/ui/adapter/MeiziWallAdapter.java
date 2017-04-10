@@ -9,15 +9,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SizeReadyCallback;
-
-import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.dasu.gank.R;
 import com.dasu.gank.mode.entity.Data;
 import com.dasu.gank.ui.base.OnItemClickListener;
 import com.dasu.gank.ui.view.RatioImageView;
+
+import java.util.List;
 
 /**
  * Created by sxq on 2016/9/10.
@@ -70,9 +67,7 @@ public class MeiziWallAdapter extends RecyclerView.Adapter<MeiziWallAdapter.View
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @InjectView(R.id.meizhi_img)
         RatioImageView meizhiImg;
-        @InjectView(R.id.meizhi_tv)
         TextView meizhiText;
 
         View mItemView;
@@ -80,8 +75,9 @@ public class MeiziWallAdapter extends RecyclerView.Adapter<MeiziWallAdapter.View
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
             mItemView = itemView;
+            meizhiImg = (RatioImageView) itemView.findViewById(R.id.meizhi_img);
+            meizhiText = (TextView) itemView.findViewById(R.id.meizhi_tv);
             mItemView.setOnClickListener(this);
             meizhiImg.setOnClickListener(this);
             meizhiImg.setOriginSize(50, 50);

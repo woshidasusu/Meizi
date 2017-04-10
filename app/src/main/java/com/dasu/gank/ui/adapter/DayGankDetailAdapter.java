@@ -6,11 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
-import butterknife.ButterKnife;
 import com.dasu.gank.R;
 import com.dasu.gank.mode.entity.Data;
+
+import java.util.List;
 
 /**
  * Created by dasu on 2016/10/9.
@@ -67,7 +66,6 @@ public class DayGankDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         public VideoViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
         }
     }
 
@@ -75,7 +73,6 @@ public class DayGankDetailAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         public DataViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
         }
     }
 

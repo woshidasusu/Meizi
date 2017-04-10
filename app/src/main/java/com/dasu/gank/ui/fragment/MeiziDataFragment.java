@@ -10,13 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.dasu.gank.R;
 import com.dasu.gank.mode.entity.Data;
+import com.dasu.gank.ui.adapter.MeiziWallAdapter;
 import com.dasu.gank.ui.base.OnItemClickListener;
 import com.dasu.gank.utils.ListUtils;
-import com.dasu.gank.ui.adapter.MeiziWallAdapter;
 
 /**
  * Created by dasu on 2016/9/26.
@@ -28,15 +26,14 @@ public class MeiziDataFragment extends GankDataFragment {
 
     private MeiziWallAdapter mMeiziAdapter;
 
-    @InjectView(R.id.rv_meizi_photo_wall)
-    RecyclerView mMeiziWallView;
+    private RecyclerView mMeiziWallView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_meizi, container, false);
-            ButterKnife.inject(this, rootView);
+            findView(rootView);
             bindWidgets();
         }
         return rootView;
@@ -58,6 +55,10 @@ public class MeiziDataFragment extends GankDataFragment {
                 loadServiceData(false);
             }
         }
+    }
+
+    private void findView(View view) {
+        mMeiziWallView = (RecyclerView) view.findViewById(R.id.rv_meizi_photo_wall);
     }
 
     private void bindWidgets() {

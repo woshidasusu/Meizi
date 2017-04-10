@@ -10,13 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.dasu.gank.R;
 import com.dasu.gank.mode.entity.Data;
+import com.dasu.gank.ui.adapter.AndroidDataAdapter;
 import com.dasu.gank.ui.base.OnItemClickListener;
 import com.dasu.gank.utils.ListUtils;
-import com.dasu.gank.ui.adapter.AndroidDataAdapter;
 
 /**
  * Created by dasu on 2016/9/26.
@@ -29,8 +27,7 @@ public class WebDataFragment extends GankDataFragment {
     private AndroidDataAdapter mDataAdapter;
     private Context mContext;
 
-    @InjectView(R.id.rv_web)
-    RecyclerView mAndroidDataView;
+    private RecyclerView mAndroidDataView;
 
     public WebDataFragment(String type) {
         mType = type;
@@ -57,7 +54,7 @@ public class WebDataFragment extends GankDataFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_web, container, false);
-            ButterKnife.inject(this, rootView);
+            findView(rootView);
             bindWidgets();
         }
         return rootView;
@@ -74,7 +71,9 @@ public class WebDataFragment extends GankDataFragment {
         }
     }
 
-
+    private void findView(View view) {
+        mAndroidDataView = (RecyclerView) view.findViewById(R.id.rv_web);
+    }
 
     private void bindWidgets() {
         LinearLayoutManager manager = new LinearLayoutManager(mContext);

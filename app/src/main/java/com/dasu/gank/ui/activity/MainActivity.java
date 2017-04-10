@@ -18,9 +18,6 @@ import com.dasu.gank.utils.ListUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
 public class MainActivity extends SwipeRefreshActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -28,19 +25,15 @@ public class MainActivity extends SwipeRefreshActivity {
     private GankPagerFragmentAdapter mFragmentAdapter;
     private List<GankDataFragment> mFragmentList;
 
-    @InjectView(R.id.main_tab_layout)
-    TabLayout mTabLayout;
-    @InjectView(R.id.main_content_viewpager)
-    ViewPager mViewPager;
-    @InjectView(R.id.layout_content)
-    ViewGroup mContentLayout;
+    private TabLayout mTabLayout;
+    private ViewPager mViewPager;
+    private ViewGroup mContentLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.inject(this);
-
         initVariable();
+        findView();
         bindWidgets();
         UpdateController.checkUpdate(this, new UpdateDialog(this));
         addNoNetworkTipView(mContentLayout);
@@ -51,7 +44,7 @@ public class MainActivity extends SwipeRefreshActivity {
         return R.layout.activity_main;
     }
 
-    public void initVariable() {
+    private void initVariable() {
         mFragmentList = new ArrayList<>();
         GankDataFragmentFactory factory = new GankDataFragmentFactory();
         for (FragmentKey key: FragmentKey.values()) {
@@ -59,6 +52,12 @@ public class MainActivity extends SwipeRefreshActivity {
         }
         mFragmentAdapter = new GankPagerFragmentAdapter(getSupportFragmentManager(), mFragmentList);
 
+    }
+
+    private void findView() {
+        mTabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
+        mViewPager = (ViewPager) findViewById(R.id.main_content_viewpager);
+        mContentLayout = (ViewGroup) findViewById(R.id.layout_content);
     }
 
     public void bindWidgets() {

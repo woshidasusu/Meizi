@@ -10,17 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dasu.gank.R;
+import com.dasu.gank.mode.entity.DayGank;
+import com.dasu.gank.mode.entity.DayPublish;
+import com.dasu.gank.ui.adapter.DayGankAdapter;
+import com.dasu.gank.utils.ListUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import com.dasu.gank.R;
-import com.dasu.gank.mode.entity.DayGank;
-import com.dasu.gank.mode.entity.DayPublish;
-import com.dasu.gank.utils.ListUtils;
-import com.dasu.gank.ui.adapter.DayGankAdapter;
+import static com.dasu.gank.R.id.rv_day;
 
 /**
  * Created by dasu on 2016/9/26.
@@ -34,8 +34,7 @@ public class DayGankFragment extends GankDataFragment {
     private Context mContext;
     private List<DayPublish> mDataList;
 
-    @InjectView(R.id.rv_day)
-    RecyclerView mAndroidDataView;
+    private RecyclerView mAndroidDataView;
 
     public DayGankFragment(String type) {
         mType = type;
@@ -62,7 +61,7 @@ public class DayGankFragment extends GankDataFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.fragment_day_gank, container, false);
-            ButterKnife.inject(this, rootView);
+            findView(rootView);
             bindWidgets();
         }
         return rootView;
@@ -89,6 +88,10 @@ public class DayGankFragment extends GankDataFragment {
                 Collections.sort(mDataList);
             }
         });
+    }
+
+    private void findView(View view) {
+        mAndroidDataView = (RecyclerView) view.findViewById(rv_day);
     }
 
     private void bindWidgets() {

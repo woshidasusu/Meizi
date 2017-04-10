@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -173,9 +171,7 @@ public class DayGankAdapter extends RecyclerView.Adapter<DayGankAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @InjectView(R.id.day_gank_img)
         RatioImageView mDayGankImg;
-        @InjectView(R.id.day_gank_title)
         TextView mDayGankTitle;
 
         DayGank mData;
@@ -183,8 +179,9 @@ public class DayGankAdapter extends RecyclerView.Adapter<DayGankAdapter.ViewHold
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
             mItemView = itemView;
+            mDayGankImg = (RatioImageView) itemView.findViewById(R.id.day_gank_img);
+            mDayGankTitle = (TextView) itemView.findViewById(R.id.day_gank_title);
             mItemView.setOnClickListener(this);
             mDayGankImg.setOnClickListener(this);
         }

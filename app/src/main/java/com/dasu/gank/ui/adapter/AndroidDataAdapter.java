@@ -10,16 +10,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SizeReadyCallback;
-
-import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 import com.dasu.gank.R;
 import com.dasu.gank.mode.entity.Data;
 import com.dasu.gank.ui.base.OnItemClickListener;
-import com.dasu.gank.utils.TimeUtils;
 import com.dasu.gank.ui.view.RatioImageView;
+import com.dasu.gank.utils.TimeUtils;
+
+import java.util.List;
 
 /**
  * Created by dasu on 2016/9/28.
@@ -79,24 +76,22 @@ public class AndroidDataAdapter extends RecyclerView.Adapter<AndroidDataAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @InjectView(R.id.android_item_image)
         RatioImageView mItemImage;
-        @InjectView(R.id.android_item_title)
         TextView mItemTitle;
-        @InjectView(R.id.android_item_publish_time)
         TextView mItemPublishTime;
-        @InjectView(R.id.android_item_author)
         TextView mItemAuthor;
-        @InjectView(R.id.android_item_type)
         TextView mItemType;
-
         View mItemView;
         Data mData;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mItemView = itemView;
-            ButterKnife.inject(this, itemView);
+            mItemImage = (RatioImageView) itemView.findViewById(R.id.android_item_image);
+            mItemTitle = (TextView) itemView.findViewById(R.id.android_item_title);
+            mItemPublishTime = (TextView) itemView.findViewById(R.id.android_item_publish_time);
+            mItemAuthor = (TextView) itemView.findViewById(R.id.android_item_author);
+            mItemType = (TextView) itemView.findViewById(R.id.android_item_type);
             itemView.setOnClickListener(this);
         }
 

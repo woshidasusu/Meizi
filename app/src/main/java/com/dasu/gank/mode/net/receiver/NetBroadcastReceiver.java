@@ -20,7 +20,8 @@ public class NetBroadcastReceiver extends BroadcastReceiver {
      */
     public static final String NET_CHANGED_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
     /**
-     * 支持并发读
+     * 支持并发读，为什么选择使用这个，因为这个支持在读的过程中对 list 进行修改，
+     * 它是线程安全的
      */
     private static CopyOnWriteArrayList<NetStateListener> mListeners = new CopyOnWriteArrayList<>();
 

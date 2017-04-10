@@ -5,13 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.dasu.gank.R;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 
 /**
  * Created by dasu on 2016/8/25.
@@ -21,16 +18,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private long mFirstClickTime;
 
-    @InjectView(R.id.toolbar)
-    public Toolbar mToolbar;
-    @InjectView(R.id.collaps_toolbar)
-    public CollapsingToolbarLayout mCollapsToolbar;
+    protected Toolbar mToolbar;
+    protected CollapsingToolbarLayout mCollapsToolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(provideContentView());
-        ButterKnife.inject(this);
+        findView();
+        bindWidgets();
         //透明状态栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         mCollapsToolbar.setTitle(getString(R.string.app_name));
@@ -44,8 +40,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         ActivityStack.getInstance().popActivity(this);
     }
 
-    @OnClick(R.id.toolbar)
-    public void onToolbarClickListener() {
+    private void findView() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mCollapsToolbar = (CollapsingToolbarLayout) findViewById(R.id.collaps_toolbar);
+    }
+
+    private void bindWidgets() {
+        mToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onToolbarClick();
+            }
+        });
+    }
+
+    protected void onToolbarClick() {
         long secClick = System.currentTimeMillis();
         if ((secClick - mFirstClickTime) < 1000) {
             onToolbarDoubleClick();
@@ -56,6 +65,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onToolbarDoubleClick() {
     }
 
-    public abstract int provideContentView();
+    protected abstract int provideContentView();
 
 }
