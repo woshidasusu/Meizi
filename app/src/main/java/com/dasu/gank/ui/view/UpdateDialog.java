@@ -9,8 +9,9 @@ import android.net.Uri;
 import android.widget.Toast;
 
 import com.dasu.gank.mode.entity.VersionResEntity;
-import com.dasu.gank.mode.net.update.OnCheckUpdateListener;
-import com.dasu.gank.mode.net.update.UpdateController;
+import com.dasu.gank.mode.logic.update.OnCheckUpdateListener;
+import com.dasu.gank.mode.logic.update.UpdateController;
+import com.dasu.gank.utils.ToastUtils;
 
 import java.io.File;
 
@@ -97,7 +98,7 @@ public class UpdateDialog extends AlertDialog implements OnCheckUpdateListener {
             intent.setDataAndType(Uri.fromFile(new File(apkPath)), "application/vnd.android.package-archive");
             mContext.startActivity(intent);
         } else {
-            Toast.makeText(mContext, "下载失败，请重试", Toast.LENGTH_SHORT).show();
+            ToastUtils.show(mContext, "下载失败，请重试", Toast.LENGTH_SHORT);
         }
     }
 

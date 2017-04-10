@@ -1,4 +1,4 @@
-package com.dasu.gank.mode.net.update;
+package com.dasu.gank.mode.logic.update;
 
 import android.content.Context;
 import android.os.AsyncTask;
