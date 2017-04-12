@@ -16,6 +16,13 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "GAND_SERVICE", '"http://gank.io/api/"'
+        buildConfigField "String", "GITHUB_SERVICE", '"https://api.github.com/"'
+        //使用 fir.im 做版本管理服务器
+        buildConfigField "String", "VMS", '"http://api.fir.im/"'
+        buildConfigField 'String', 'APPID', /"${properties.getProperty('APPID', '')}"/
+        buildConfigField 'String', 'APITOKEN', /"${properties.getProperty('APITOKEN', '')}"/
     }
 
     signingConfigs {
@@ -41,12 +48,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "GAND_SERVICE", '"http://gank.io/api/"'
-            buildConfigField "String", "GITHUB_SERVICE", '"https://api.github.com/"'
-            //使用 fir.im 做版本管理服务器
-            buildConfigField "String", "VMS", '"http://api.fir.im/"'
-            buildConfigField 'String', 'APPID', /"${properties.getProperty('APPID', '')}"/
-            buildConfigField 'String', 'APITOKEN', /"${properties.getProperty('APITOKEN', '')}"/
             //签名
             if (keyStore.exists()) {
                 println 'gank.jks signing...'
@@ -65,14 +66,6 @@ android {
                     }
                 }
             }
-        }
-        debug {
-            buildConfigField "String", "GAND_SERVICE", '"http://gank.io/api/"'
-            buildConfigField "String", "GITHUB_SERVICE", '"https://api.github.com/"'
-            //使用 fir.im 做版本管理服务器
-            buildConfigField "String", "VMS", '"http://api.fir.im/"'
-            buildConfigField 'String', 'APPID', /"${properties.getProperty('APPID', '')}"/
-            buildConfigField 'String', 'APITOKEN', /"${properties.getProperty('APITOKEN', '')}"/
         }
     }
 

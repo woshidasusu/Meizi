@@ -39,6 +39,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="com.dasu.gank.authority"
+            android:name=".mode.database.GankContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

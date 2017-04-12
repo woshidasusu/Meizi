@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Created by dasu on 2017/4/11.
  */
-public class DatabaseHelper extends SQLiteOpenHelper {
+class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = DatabaseHelper.class.getSimpleName();
 
     private static final String TEMP_SUFFIX = "_temp_";
