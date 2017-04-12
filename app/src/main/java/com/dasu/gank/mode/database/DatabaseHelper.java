@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.dasu.gank.mode.logic.log.LogUtil;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,38 +19,29 @@ import java.util.Set;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TAG = DatabaseHelper.class.getSimpleName();
 
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
-    }
-
-
     private static final String TEMP_SUFFIX = "_temp_";
 
-    private SQLiteDatabase db_r = null; // readable database
-    private SQLiteDatabase db_w = null; // writable database
+    private SQLiteDatabase mReadableDB = null; // readable database
+    private SQLiteDatabase mWritableDB = null; // writable database
 
-    private static ConfDbHelper mDbHelper;
+    private static DatabaseHelper mDbHelper;
 
-    private ConfDbHelper(Context context) {
-        super(context, ConfDataStore.DB_FILE, null, ConfDataStore.DB_VERSION);
+    private DatabaseHelper(Context context) {
+        super(context, DatabaseManager.DB_NAME, null, DatabaseManager.DB_VERSION);
     }
 
-    public static synchronized ConfDbHelper getInstance(Context context) {
-        if(mDbHelper == null) {
-            mDbHelper = new ConfDbHelper(context);
+    public static synchronized DatabaseHelper getInstance(Context context) {
+        if (mDbHelper == null) {
+            mDbHelper = new DatabaseHelper(context);
         }
         return mDbHelper;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        if (LogLevel.DEV) {
-            DevLog.d(TAG, "onCreate()...");
-        }
-
-        Collection<ConfDbTable> tables = ConfDataStore.sPBXDbTables.values();
-        Iterator<ConfDbTable> iterator = tables.iterator();
-
+        LogUtil.d(TAG, "onCreate()...");
+        Collection<BaseDbTable> tables = DatabaseManager.sAllTables.values();
+        Iterator<BaseDbTable> iterator = tables.iterator();
         try {
             db.beginTransaction();
             while (iterator.hasNext()) {
@@ -56,11 +49,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
             db.setTransactionSuccessful();
         } catch (Throwable e) {
-            //TODO Implement proper error handling
-            if (LogLevel.MARKET) {
-                MarketLog.e(TAG, "onCreate(): DB creation failed:", e);
-            }
-
             throw new RuntimeException("DB creation failed: " + e.getMessage());
         } finally {
             db.endTransaction();
@@ -86,59 +74,63 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @see SQLiteOpenHelper#onUpgrade(SQLiteDatabase, int, int)
      */
+    /**
+     * 支持下列的数据库升级操作:
+     * 1.添加新表
+     * 2.删除旧表
+     * 3.在旧表里添加新的列属性
+     * 新增的列将会以默认的值填充，如果没有设置默认的值，那么会以null填充，默认的值在创建表的sql语句里设置
+     * 4.在旧表里删除列属性
+     * <p>
+     * 以上是所有的表默认的升级操作，如果有针对某张表或某个版本的特定升级需求，那么需要重写那张表的 onUpgrade()，
+     * 覆盖基类默认的升级操作。
+     *
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (LogLevel.MARKET) {
-            MarketLog.d(TAG, "onUpgrade(oldVersion = " + oldVersion + ", newVersion = " + newVersion + ")...");
-        }
-
-        //Get table names in the old DB
-        Collection<String> old_tables = ConfDbTable.listTables(db);
-        if (old_tables == null || old_tables.size() == 0) {
-            if (LogLevel.MARKET) {
-                MarketLog.d(TAG, "onUpgrade(): no existing tables; calling onCreate()...");
-            }
+        LogUtil.d(TAG, "onUpgrade(oldVersion = " + oldVersion + ", newVersion = " + newVersion + ")...");
+        //获取旧版本的所有表
+        Collection<String> oldTables = BaseDbTable.listTables(db);
+        if (oldTables == null || oldTables.size() == 0) {
+            LogUtil.d(TAG, "onUpgrade(): no existing tables; calling onCreate()...");
             onCreate(db);
             return;
         }
 
-        //Get table names in the new DB
-        Set<String> new_tables = ConfDataStore.sPBXDbTables.keySet();
+        //获取所有新表
+        Set<String> newTables = DatabaseManager.sAllTables.keySet();
 
         try {
             db.beginTransaction();
-            //Remove old tables which are not in the new DB scheme
-            HashSet<String> obsolete_tables = new HashSet<String>();
-            for (String table : old_tables) {
-                if (!new_tables.contains(table)) {
-                    if (LogLevel.DEV) {
-                        DevLog.d(TAG, "onUpgrade(): remove table: " + table);
-                    }
-                    ConfDbTable.dropTable(db, table);
-                    obsolete_tables.add(table);
+            //删除没有在新版本的数据库里出现的旧表
+            HashSet<String> removedTables = new HashSet<String>();
+            for (String table : oldTables) {
+                if (!newTables.contains(table)) {
+                    LogUtil.d(TAG, "onUpgrade(): remove table: " + table);
+                    BaseDbTable.dropTable(db, table);
+                    removedTables.add(table);
                 }
             }
-            old_tables.removeAll(obsolete_tables);
+            oldTables.removeAll(removedTables);
 
-            //Create and upgrade new tables
-            ConfDbTable table_descriptor;
-            for (String table : new_tables) {
-                table_descriptor = ConfDataStore.sPBXDbTables.get(table);
-
-                //Check if the new table exists in the old DB
-                if (old_tables.contains(table)) {
-                    String temp_name = getTempTableName(table, old_tables, new_tables);
-                    table_descriptor.onUpgrade(db, oldVersion, newVersion, temp_name);
+            //创建新表或对旧表升级
+            BaseDbTable curTable;
+            for (String table : newTables) {
+                curTable = DatabaseManager.sAllTables.get(table);
+                //判断该表是否是新表，新表则创建，旧表则升级
+                if (oldTables.contains(table)) {
+                    String tempName = getTempTableName(table, oldTables, newTables);
+                    curTable.onUpgrade(db, oldVersion, newVersion, tempName);
                 } else {
-                    table_descriptor.onCreate(db);
+                    curTable.onCreate(db);
                 }
             }
             db.setTransactionSuccessful();
         } catch (Throwable e) {
-            if (LogLevel.MARKET) {
-                MarketLog.e(TAG, "onUpgrade(): DB upgrade failed:", e);
-            }
-
+            LogUtil.e(TAG, "onUpgrade(): DB upgrade failed:", e);
             throw new RuntimeException("DB upgrade failed: " + e.getMessage());
         } finally {
             db.endTransaction();
@@ -147,9 +139,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     /**
-     * Generates temporary name for use during table upgrade.
-     * The name is guaranteed to be unique, i.e. not used as table name
-     * in the old and new DB schemes.
+     * 获取表的临时命名，方便在升级表时进行拷贝操作
+     * 确保临时表名不和任何表名起冲突
      *
      * @param tableName
      * @param oldTableNames
@@ -157,18 +148,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return
      */
     private String getTempTableName(String tableName, Collection<String> oldTableNames, Set<String> newTableNames) {
-        String temp_name_base = tableName + TEMP_SUFFIX;
-
-        if (!oldTableNames.contains(temp_name_base) && !newTableNames.contains(temp_name_base)) {
-            return temp_name_base;
+        String base = tableName + TEMP_SUFFIX;
+        if (!oldTableNames.contains(base) && !newTableNames.contains(base)) {
+            return base;
         }
-
         Random random = new Random();
-        String temp_name;
-        for (;;) {
-            temp_name = temp_name_base + random.nextInt();
-            if (!oldTableNames.contains(temp_name) && !newTableNames.contains(temp_name)) {
-                return temp_name;
+        String tempName;
+        for (; ; ) {
+            tempName = base + random.nextInt();
+            if (!oldTableNames.contains(tempName) && !newTableNames.contains(tempName)) {
+                return tempName;
             }
         }
     }
@@ -176,39 +165,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public synchronized SQLiteDatabase getReadableDatabase() {
-        if (db_r == null || !db_r.isOpen()) {
+        if (mReadableDB == null || !mReadableDB.isOpen()) {
             try {
-                db_r = super.getReadableDatabase();
+                mReadableDB = super.getReadableDatabase();
             } catch (SQLiteException e) {
-                //TODO Implement proper error handling
-                db_r = null;
-                if (LogLevel.MARKET) {
-                    MarketLog.e(TAG, "getReadableDatabase(): Error opening", e);
-                }
-
-                throw e;
+                mReadableDB = null;
+                LogUtil.e(TAG, "getReadableDatabase(): Error opening", e);
             }
         }
-        return db_r;
+        return mReadableDB;
     }
 
 
     @Override
     public synchronized SQLiteDatabase getWritableDatabase() {
-        if (db_w == null || !db_w.isOpen() || db_w.isReadOnly()) {
+        if (mWritableDB == null || !mWritableDB.isOpen() || mWritableDB.isReadOnly()) {
             try {
-                db_w = super.getWritableDatabase();
+                mWritableDB = super.getWritableDatabase();
             } catch (SQLiteException e) {
-                //TODO Implement proper error handling
-                db_w = null;
-                if (LogLevel.MARKET) {
-                    MarketLog.e(TAG, "getWritableDatabase(): Error", e);
-                }
-
-                throw e;
+                mWritableDB = null;
+                LogUtil.e(TAG, "getWritableDatabase(): Error", e);
             }
         }
-        return db_w;
+        return mWritableDB;
     }
-
 }

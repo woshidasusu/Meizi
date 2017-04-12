@@ -29,14 +29,14 @@ abstract class BaseDbTable implements BaseColumns {
      *
      * @return
      */
-    protected abstract String getName();
+    abstract String getName();
 
     /**
      * 数据库创建时，创建数据库表
      *
      * @param db
      */
-    protected abstract void onCreate(SQLiteDatabase db);
+    abstract void onCreate(SQLiteDatabase db);
 
     //sqlite 会将所有的表信息存在 sqlite_master 这张表里，下面 sql 的作用是查询所有的表名，可用于获取所有旧的数据库表
     //方便升级时参照新的数据库表做相应操作
