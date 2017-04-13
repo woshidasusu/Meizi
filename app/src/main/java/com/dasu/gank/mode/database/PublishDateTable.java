@@ -28,12 +28,12 @@ public class PublishDateTable extends BaseDbTable {
         return sInstance;
     }
     //列属性
-    private static final String DATE = "date";
+    static final String DATE = "date";
 
     private static final String SQL_CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                     + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + DATE + " TEXT, "
+                    + DATE + " TEXT UNIQUE, "
                     + ");";
 
 }

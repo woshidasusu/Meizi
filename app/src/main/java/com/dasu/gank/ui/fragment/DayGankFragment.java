@@ -81,13 +81,13 @@ public class DayGankFragment extends GankDataFragment {
 
     private void initVariable() {
         mDataList = new ArrayList<>();
-        mDaoSession.startAsyncSession().runInTx(new Runnable() {
-            @Override
-            public void run() {
-                mDataList.addAll(mDaoSession.getDayPublishDao().queryBuilder().list());
-                Collections.sort(mDataList);
-            }
-        });
+//        mDaoSession.startAsyncSession().runInTx(new Runnable() {
+//            @Override
+//            public void run() {
+//                mDataList.addAll(mDaoSession.getDayPublishDao().queryBuilder().list());
+//                Collections.sort(mDataList);
+//            }
+//        });
     }
 
     private void findView(View view) {
@@ -107,11 +107,6 @@ public class DayGankFragment extends GankDataFragment {
 
     @Override
     public void loadData() {
-
-    }
-
-    @Override
-    protected void loadServiceData(boolean clearCache) {
 
     }
 

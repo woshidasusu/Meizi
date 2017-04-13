@@ -129,7 +129,8 @@ public class LoadActivity extends Activity {
     }
 
     public void startMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, DebugActivity.class);
+//        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }

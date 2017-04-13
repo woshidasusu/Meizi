@@ -68,12 +68,6 @@ android {
             }
         }
     }
-
-    greendao{
-        schemaVersion 4
-        daoPackage 'com.dasu.gank.mode.dao'
-        targetGenDir'src/main/java'
-    }
 }
 
 dependencies {

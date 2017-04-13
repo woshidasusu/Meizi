@@ -40,6 +40,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.activity.DebugActivity"/>
+
         <provider
             android:authorities="com.dasu.gank.authority"
             android:name=".mode.database.GankContentProvider"

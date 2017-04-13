@@ -10,6 +10,7 @@ import com.dasu.gank.AppConstant;
 import com.dasu.gank.GankApplication;
 import com.dasu.gank.mode.entity.Data;
 import com.dasu.gank.mode.entity.GankDataResponse;
+import com.dasu.gank.mode.logic.log.LogUtil;
 import com.dasu.gank.mode.net.retrofit.GankController;
 import com.dasu.gank.ui.base.SwipeRefreshFragment;
 import com.dasu.gank.utils.TimeUtils;
@@ -122,6 +123,7 @@ public abstract class GankDataFragment extends SwipeRefreshFragment {
             @Override
             public void onResponse(Call<GankDataResponse> call, Response<GankDataResponse> response) {
                 Log.d(TAG, "[" + getType() + "] loadServiceData() -> onResponse(): " + response.isSuccessful());
+                LogUtil.d(TAG, response.toString());
                 if (response.isSuccessful()) {
                     if (clearCache) {
                         mDataList.clear();

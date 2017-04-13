@@ -1,6 +1,7 @@
 package com.dasu.gank.mode.database;
 
 import android.content.UriMatcher;
+import android.net.Uri;
 
 import java.util.LinkedHashMap;
 
@@ -40,6 +41,17 @@ class DatabaseManager {
     static {
         sUriMatcher.addURI(AUTHORITY, BlogTable.getInstance().getName(), BLOG_TABLE);
         sUriMatcher.addURI(AUTHORITY, PublishDateTable.getInstance().getName(), PUBLISH_DATE_TABLE);
+    }
+
+    static String matchUri(Uri uri) {
+        switch (sUriMatcher.match(uri)) {
+            case BLOG_TABLE:
+                return BlogTable.getInstance().getName();
+            case PUBLISH_DATE_TABLE:
+                return PublishDateTable.getInstance().getName();
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
     }
 
 

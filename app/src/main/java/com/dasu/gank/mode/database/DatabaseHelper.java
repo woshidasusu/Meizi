@@ -56,25 +56,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Performs DB upgrade to the new scheme.
-     * The data in matching tables' columns is preserved during upgrade.
-     * The following operations are supported:
-     * 1. Add new tables.
-     * 2. Remove tables.
-     * 3. Add new columns to existing tables.
-     *    New columns are filled with the default column values according to the table scheme,
-     *    or with NULL if no default value is specified.
-     * 4. Remove columns.
-     * If any additional operations need to be performed during upgrade for a specific table
-     * (e.g. new column contents should be calculated based on other columns,
-     * or existing columns shall be filled with the default values instead of copying from the old table, etc.),
-     * the PBXDbTable.onUpgrade() method should be overridden for the specific table.
-     * If DB upgrade needs additional operations across the whole DB (e.g. move data from one table to another, etc.),
-     * this method may be modified accordingly for the specific DB versions.
-     *
-     * @see SQLiteOpenHelper#onUpgrade(SQLiteDatabase, int, int)
-     */
-    /**
      * 支持下列的数据库升级操作:
      * 1.添加新表
      * 2.删除旧表
