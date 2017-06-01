@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">Gank.io</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="gank_data_unkonwn_who">****</string>
-
-    <string name="no_network_tip_text">网络不给力，请检查网络设置。</string>
-</resources>
