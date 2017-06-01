@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:id="@+id/ibtn_reading_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="6dp"
+            android:clickable="true"
+            android:src="@drawable/icon_arrow_left"
+            />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/layout_reading_title"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:tabIndicatorColor="@color/deep_blue"
+            app:tabMode="scrollable"
+            app:tabSelectedTextColor="@color/deep_blue"
+            app:tabTextColor="@color/white"
+            />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="afterDescendants">
+
+        <com.dasu.ganhuo.ui.view.SwipeRefreshPagerLayout
+            android:id="@+id/layout_reading_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_reading_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </com.dasu.ganhuo.ui.view.SwipeRefreshPagerLayout>
+    </FrameLayout>
+
+</LinearLayout>

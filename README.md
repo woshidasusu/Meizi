@@ -1,39 +1,59 @@
-# Meizhi
-android小白练手项目---妹子App
+# GanHuo  
 
-##目前进展
+<br>
 
-**2017-04-14**  
-由于项目初期架构搭建太乱了，代码看着很不舒服，所以另开了一个[仓库](https://github.com/woshidasusu/GanHuo)，最后完成后会覆盖过来。另备注：网上很多关于gank的项目都使用到了最近热门的框架，本项目不打算引入那么多框架，数据库也是自己写，自己实现，项目使用的也是MVC。现在能力还不够，即使跟着别人使用那么高级的东西，也感受不到它的魅力，路要一步步走，坑多踩踩，感受自然会多点。  
+![Language](https://img.shields.io/badge/language-Java-EE0000.svg) 
+![Version](https://img.shields.io/badge/version-1.3-8470FF.svg)
 
-**2017-04-05**  
-我回来补坑了！！！  
+<br>
 
-**2016-11-2**  
-最近忙着校园招聘，累死了，项目先暂时放会，收到满意的offer后再继续回来敲我的代码  
+## 介绍
 
-**2016-10-10**
-列表页面暂时完成，缓存机制待改善，详情页待开发
+Gank平台的移动端又来了，本项目在架构方面有稍微花点心思，虽然还是最简单的MVC模式，但基本参考MVP的思想，Activity只负责ui显示逻辑，ui和业务会尽量的分离开，每个包的类权限严格控制，尽量对外部隐藏其实现细节。另外，本项目不像其他热门的Gank客户端那样使用诸如Rx系列的高级开源库，代码应该是可以很容易看懂的，吧。哈哈，有兴趣的可以fork看看，有什么问题可以联系我哈。  
 
-**2016-10-1**  
-自定义实现Fragment懒加载，支持Fragment可见时加载数据，离开时隐藏加载动画，返回时根据加载状态自动显示或隐藏加载动画  
+以下是项目所依赖的第三方库：
 
-**2016-9-28**
-添加干货（android）的布局（待完善）
+- Retrofit + Okhttp （网络访问）   
+- Gson （Json数据解析）  
+- Glide （图片加载）  
+- photoview （支持手势缩放的图片查看）  
+- Jsoup （Html解析）
 
-**2016-9-26**
-添加Tablayout + ViewPager布局
+<br>
+<br>
 
-**2016-9-26前**
-引入GreenDao数据库框架  
-引入Picasso图片加载框架  
-首页瀑布流界面完成  
-引入Retrofit2网络访问框架  
-引入Glidet图片框架
+## App下载  
 
-效果：  
-![](./picture/meizi5.gif)
+[Fir下载](http://fir.im/dasugankhuo)  
+
+![扫一下下载App](./image/download.png)  
 
 
+<br>
+<br>
 
+## 效果  
+
+<br>
+gif图有些长，2分多钟，慢慢看哦  
+
+![](./image/gif.gif) 
+
+<img src="./image/1.png" width = "330" />　　　<img src="./image/2.png" width = "330" />
+<img src="./image/3.png" width = "330" />　　　<img src="./image/4.png" width = "330" />
+<img src="./image/5.png" width = "330" />　　　<img src="./image/6.png" width = "330" />
+<img src="./image/7.png" width = "330" />　　　<img src="./image/8.png" width = "330" />
+<img src="./image/11.png" width = "330" />　　　<img src="./image/10.png" width = "330" />  
+
+
+<br>
+
+
+## 鸣谢
+
+[drakeet](https://github.com/drakeet/Meizhi)  
+
+[CaMnter](https://github.com/CaMnter/EasyGank)  
+
+[burgessjp](https://github.com/burgessjp/GanHuoIO)  
 

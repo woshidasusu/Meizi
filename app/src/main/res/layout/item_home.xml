@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/bg_card"
+              android:orientation="vertical"
+              android:paddingTop="16dp"
+              android:paddingLeft="16dp"
+              android:paddingRight="16dp"
+              android:paddingBottom="8dp"
+              >
+
+    <TextView
+        android:id="@+id/tv_home_item_title"
+        style="@style/recycler_item_title"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        >
+
+        <TextView
+            android:id="@+id/tv_home_item_type"
+            style="@style/recycler_item_label"
+            android:layout_alignParentLeft="true"
+            android:background="@color/green"
+            android:text="Android"
+            />
+
+        <TextView
+            android:id="@+id/tv_home_item_source"
+            style="@style/recycler_item_label"
+            android:layout_toRightOf="@+id/tv_home_item_type"
+            android:background="@color/black"
+            android:text="Github"
+            />
+
+        <TextView
+            android:id="@+id/tv_home_item_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingLeft="30dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:maxEms="10"
+            android:drawableLeft="@drawable/icon_author"
+            android:drawablePadding="4dp"
+            android:text="dasu"
+            android:textColor="@color/gray"
+            android:textSize="13sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_home_item_date"
+            style="@style/recycler_item_date"
+            android:text="1月前"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

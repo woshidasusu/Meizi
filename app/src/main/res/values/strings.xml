@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">干货阅读</string>
+
+    <string name="no_network_tip_text">网络不给力，请检查网络设置。</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+</resources>

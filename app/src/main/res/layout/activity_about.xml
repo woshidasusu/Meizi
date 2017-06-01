@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--父容器在base_activity_subpage.xml中-->
+<!--父容器属性
+    <LinearLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"/>-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_card"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_about_me"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/iv_about_github"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/icon_github"/>
+
+            <TextView
+                android:id="@+id/tv_about_github"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/iv_about_github"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/iv_about_github"
+                android:text="https://github.com/woshidasusu"
+                android:textColor="@color/colorAccent"
+                android:clickable="true"
+                android:textSize="13sp"
+                />
+
+            <ImageView
+                android:id="@+id/iv_about_jianshu"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_below="@+id/iv_about_github"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/icon_jianshu"/>
+
+            <TextView
+                android:id="@+id/tv_about_jianshu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/iv_about_jianshu"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/iv_about_jianshu"
+                android:text="http://www.jianshu.com/u/bb52a2918096"
+                android:textColor="@color/colorAccent"
+                android:clickable="true"
+                android:textSize="13sp"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-45dp"
+        android:text="I'm dasu, and I am coding..."
+        android:textColor="@color/gray"
+        android:textSize="13sp"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_about_project"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_about_thanks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="-10dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
+</merge>

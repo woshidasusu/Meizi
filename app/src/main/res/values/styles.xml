@@ -1,0 +1,68 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:windowAnimationStyle">@style/activityAnimation</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+    <!--设置activity的切换动画-->
+    <style name="activityAnimation" parent="@android:style/Animation">
+        <!--新的activity进入动画-->
+        <item name="android:activityOpenEnterAnimation">@anim/slide_right_in</item>
+        <!--activity没有finish时的退出动画，即旧的activity退出动画-->
+        <item name="android:activityOpenExitAnimation">@anim/slide_left_out</item>
+        <!--上一个activity进入动画，即旧的activity进入动画-->
+        <item name="android:activityCloseEnterAnimation">@anim/slide_left_in</item>
+        <!--activity finish时的退出动画，即旧的activity退出动画-->
+        <item name="android:activityCloseExitAnimation">@anim/slide_right_out</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <!--设置一些公用的属性，方便统一修改-->
+    <!--RecyclerView 的 card item 布局里的title TextView属性，在home,video,history模块均有用到-->
+    <style name="recycler_item_title">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <!--RecyclerView 的 card item 布局里的date TextView属性，在home,video,history模块均有用到-->
+    <style name="recycler_item_date">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:drawableLeft">@drawable/icon_date</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+    <!--RecyclerView 的 card item 布局里的type|source TextView属性，在home,video,history模块均有用到-->
+    <style name="recycler_item_label">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!--dialog-->
+    <style name="dialog" parent="@android:style/Theme.NoTitleBar.Fullscreen">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@color/white</item>
+    </style>
+    
+</resources>

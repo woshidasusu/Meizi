@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <com.dasu.ganhuo.ui.view.ScaleImageView
+        android:id="@+id/iv_category_demo"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:adjustViewBounds="true"
+        android:background="@color/white"
+        android:scaleType="center"
+        />
+
+    <TextView
+        android:id="@+id/tv_category_img_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_round_transparent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:padding="6dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        android:text="0张"
+        />
+
+    <RelativeLayout
+        android:id="@+id/layout_category_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_category_demo"
+        android:background="@color/transparent"
+        android:padding="10dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_category_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/tv_category_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_category_title"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_category_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tv_category_title"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_category_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_category_title"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+              android:layout_marginBottom="30dp"
+              android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_view_data_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/img_data_empty"
+        />
+
+    <TextView
+        android:id="@+id/tv_view_data_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-30dp"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="暂时没有数据，到其他栏目看看吧"
+        android:textColor="@color/textSecondary"
+        android:textSize="18sp"
+        />
+
+</LinearLayout>

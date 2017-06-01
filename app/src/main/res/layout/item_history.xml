@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/bg_card"
+              android:orientation="vertical"
+              android:paddingBottom="8dp"
+              android:paddingLeft="16dp"
+              android:paddingRight="16dp"
+              android:paddingTop="16dp">
+
+    <TextView
+        android:id="@+id/tv_history_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="left"
+        >
+
+        <LinearLayout
+            android:id="@+id/layout_label1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/tv_history_item_type1"
+                style="@style/recycler_item_label"
+                android:background="@color/green"
+                android:text="Android"
+                />
+
+            <TextView
+                android:id="@+id/tv_history_item_type2"
+                style="@style/recycler_item_label"
+                android:background="@color/green"
+                android:text="Android"
+                />
+
+            <TextView
+                android:id="@+id/tv_history_item_type3"
+                style="@style/recycler_item_label"
+                android:background="@color/green"
+                android:text="Android"
+                />
+
+            <TextView
+                android:id="@+id/tv_history_item_type4"
+                style="@style/recycler_item_label"
+                android:background="@color/green"
+                android:text="Android"
+                />
+
+            <TextView
+                android:id="@+id/tv_history_item_type5"
+                style="@style/recycler_item_label"
+                android:background="@color/green"
+                android:text="Android"
+                />
+
+            <TextView
+                android:id="@+id/tv_history_item_type6"
+                style="@style/recycler_item_label"
+                android:background="@color/green"
+                android:text="Android"
+                />
+
+            <TextView
+                android:id="@+id/tv_history_item_type7"
+                style="@style/recycler_item_label"
+                android:background="@color/green"
+                android:text="Android"
+                />
+
+        </LinearLayout>
+
+        <!--  <TextView
+              android:id="@+id/tv_history_item_date"
+              style="@style/recycler_item_date"
+              android:layout_alignParentBottom="true"
+              android:text="1年前"
+              />-->
+
+    </RelativeLayout>
+
+</LinearLayout>

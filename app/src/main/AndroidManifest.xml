@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.dasu.ganhuo">
+
+    <!-- This is required for Picasso to work. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- The following permissions are OPTIONAL. -->
+
+    <!-- Used to adjust the work load depending on the type of network the device is using. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <!-- Used to load images from the gallery content provider. -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <!-- Used to load images for contact photos. -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:name=".GanhuoApplication"
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.home.HomeActivity" android:launchMode="standard"/>
+        <activity android:name=".ui.history.HistoryActivity" android:launchMode="standard"/>
+        <activity android:name=".ui.category.CategoryActivity" android:launchMode="standard"/>
+        <activity android:name=".ui.reading.ReadingActivity" android:launchMode="standard"/>
+        <activity android:name=".ui.video.VideoActivity" android:launchMode="standard"/>
+        <activity android:name=".ui.meizi.MeiziActivity" android:launchMode="standard"/>
+        <activity android:name=".ui.about.AboutActivity"/>
+        <activity android:name=".ui.meizi.ImageActivity"/>
+        <activity android:name=".ui.home.WebViewActivity"/>
+        <activity android:name=".ui.history.SomedayActivity"/>
+        <activity android:name=".ui.load.LoadActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:authorities="com.dasu.ganhuo.authority"
+            android:name=".mode.database.GanHuoContentProvider"
+            android:exported="false"/>
+
+        <meta-data android:name="com.dasu.ganhuo.ui.base.GlideModelConfig"
+                   android:value="GlideModule" />
+
+    </application>
+
+</manifest>
